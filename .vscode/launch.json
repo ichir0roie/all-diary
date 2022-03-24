@@ -8,7 +8,7 @@
             "request": "launch",
             "name": "Launch Program",
             "type": "pwa-node",
-            "program": "${workspaceFolder}/server/testServer.ts",
+            "program": "${file}",
             "cwd": "${workspaceFolder}",
             "runtimeExecutable": "C:\\Users\\tihom\\.deno\\bin\\deno.EXE",
             "runtimeArgs": [
