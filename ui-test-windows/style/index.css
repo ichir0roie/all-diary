@@ -130,3 +130,7 @@ ul
   padding: 3px;
   margin: 3px;
 }
+
+tr{
+  display: flex;
+}

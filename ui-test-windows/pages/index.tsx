@@ -1,36 +1,41 @@
 import { useDeno } from 'aleph/react'
-import React from 'react'
-import Logo from '~/components/logo.tsx'
-import useCounter from '~/lib/useCounter.ts'
+import React,{useState} from 'react'
 
-import Card from '~/components/card.tsx'
+
+import Card from  "~/components/card.tsx"
 import CardArray from '~/components/cardArray.tsx'
 
-export default function Home() {
-  // const [count, isSyncing, increase, decrease] = useCounter()
-  //  const CardArray=[
-  //   [Card("1"),Card("2"),Card("3"),Card("4")]
-  //  ]
+function get2dKeys(lenRow:number,lenCol:number){
+  var array=new Array<Array<String>>();
+  var count=0;
+  for(var r=0;r<lenRow;r++){
+    var line=new Array<String>();
+    for(var c=0;c<lenCol;c++){
+      line.push(count.toString());
+      count++;
+    }
+    array.push(line);
+  } 
+return array;
+}
 
-  //  const CardArrayComp=CardArray.map((number) =>
-  //  <li >
-  //    {number}
-  //  </li>
-  //  );
-  //  CardArray.map((c)=>
-  //  <li>
-  //  <p>test</p>  
-  //  </li>
-  //  );
+export default function Home() {
+  const [dataArray,setDataArray]=useState(get2dKeys(5,5));
+
+  console.log(dataArray);
 
   return (
+
     <div className="page">
-      {/* <Card/> */}
-      {/* {CardArray[0][0]} */}
-      {/* <ul>
-        {CardArrayComp}
-        </ul> */}
-        <CardArray/>
+      {/* <table>
+        <tr>
+          <th><Card testKey="a" key="a"/></th>
+          <th><Card testKey="b" key="b"/></th>
+          <th><Card testKey="c" key="c"/></th>
+        </tr>
+      </table> */}
+
+      <CardArray keyArray={dataArray} key="unique"/>
     </div>
-  )
+  );
 }

@@ -1,10 +1,21 @@
 import React from 'react'
+import {useState} from 'react'
 
-export default function Card( key: string ) {
+//なんと！"key"は予約語かなんかなのか！？
+export interface CardProps{
+  testKey:String;
+}
+
+export default function Card(props:CardProps) {
+  // console.log(props.key);
+  const [value,setValue]=useState("a");
   return (
-      <div className="card-frame">
+    // <div className="card-frame" key={props.testKey.toString()}>個々でやっても意味なかった。
+    // https://dev.classmethod.jp/articles/avoiding-warningeach-child-in-a-list-should-have-a-unique-key-prop-in-react-apps-is-called-and-not-on-the-side-do-it-on-the-caller/
+      <div className="card-frame" >
           <p>title</p>
           <p>text area</p>
+          <p>{props.testKey}</p>
       </div>
   )
 }

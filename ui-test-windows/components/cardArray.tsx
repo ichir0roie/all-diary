@@ -5,34 +5,34 @@ import Card from '~/components/card.tsx'
 
 // https://www.w3schools.com/html/html_tables.asp
 
-function createComponentArray(array:Array<string>){
-  return  array.map((data) =>
-  <th>
-    <Card/>
-  </th>
-  );
+function createTable(dataArray2d:Array<Array<String>>){
+  var res=new Array();
+  dataArray2d.forEach(element => {
+    var col=createTr(element);
+    res.push(col);
+  });
+  return (<table>{res}</table>);
 }
 
-export default function CardArray( ) {
-  const CardArray=[
-    [Card("1"),Card("2"),Card("3"),Card("4")]
-   ]
+function createTr(dataArray:Array<String>){
+  var res=new Array();
+  dataArray.forEach(element => {
+    var line=<th><Card testKey={element} key={element.toString()}/></th>;
+    res.push(line);
+  });
+  return (<tr>{res}</tr>);
+}
 
-   const CardArrayComp=CardArray.map((number) =>
-   <th>
-     {number}
-   </th>
-
-   );
-
-   const cardArray=[];
+// interface CardArrayProps{
+//   keyArray:Array<Array<String>>
+// }
+export default function CardArray(props:{keyArray:Array<Array<String>>}) {
+   
+  const cardArray=createTable(props.keyArray);
 
   return (
-  <table>
-    <tr>
-    {CardArrayComp}
-    </tr>
-    
-  </table>
-  )
+    <div>
+      {cardArray}
+    </div>
+  );
 }
