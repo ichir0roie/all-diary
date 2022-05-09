@@ -34,8 +34,9 @@ export default function Home() {
           <th><Card testKey="c" key="c"/></th>
         </tr>
       </table> */}
-
-      <CardArray keyArray={dataArray} key="unique"/>
+      <div className="scrollBox">
+        <CardArray keyArray={dataArray} key="unique"/>
+      </div>
     </div>
   );
 }

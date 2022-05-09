@@ -117,6 +117,9 @@ main {
   margin-top: 30px;
   font-size: 14px;
   color: #999;
+  text-align: center;
+  width: 90%;
+  height: 90%;
 }
 
 /*  since mines */
@@ -133,4 +136,20 @@ ul
 
 tr{
   display: flex;
+}
+
+.scrollBox{
+  overflow: scroll;
+  border: #000;
+  border-width: 10px;
+  border: solid;
+  width: 90%;
+  height: 90%;
+}
+.scrollBox::-webkit-scrollbar {  /* Chrome, Safari 対応 */
+  display:none;
+}
+.card{
+  width: 300px;
+  height:100px;
 }
