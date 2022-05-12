@@ -1,10 +1,13 @@
 @import url('./reset.css');
 
 main {
+  height: calc(100vh-5px);
+  width: calc(100vw-5px);
+  margin: 5px ;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
+  border-color: #999;
+  border-width: 3px;
+  border: solid;
 }
 
 .page h1 {
@@ -112,14 +115,15 @@ main {
 .counter button + button {
   margin-left: 9px;
 }
-
+これがきいてない
 .page .copyinfo {
-  margin-top: 30px;
-  font-size: 14px;
+
   color: #999;
-  text-align: center;
-  width: 90%;
-  height: 90%;
+  display: flex;
+  width: max-content;
+  border: #333;
+  border-width: 3px;
+  border: solid;
 }
 
 /*  since mines */
@@ -139,9 +143,10 @@ tr{
 }
 
 .scrollBox{
-  overflow: scroll;
+  overflow-x: scroll;
+  overflow-y: scroll;
   border: #000;
-  border-width: 10px;
+  border-width: 3px;
   border: solid;
   width: 90%;
   height: 90%;
@@ -150,6 +155,6 @@ tr{
   display:none;
 }
 .card{
-  width: 300px;
-  height:100px;
+  width: 70px;
+  height:80px;
 }
