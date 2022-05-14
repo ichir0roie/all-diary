@@ -11,13 +11,20 @@ function createTable(dataArray2d:Array<Array<String>>){
     var col=createTr(element);
     res.push(col);
   });
-  return (<table>{res}</table>);
+  return (
+    <table>
+      <tbody>
+      {res}
+      </tbody>
+      
+    </table>
+  );
 }
 
 function createTr(dataArray:Array<String>){
   var res=new Array();
   dataArray.forEach(element => {
-    var line=<th><Card testKey={element} key={element.toString()}/></th>;
+    var line=<th><Card testKey={element}/></th>;
     res.push(line);
   });
   return (<tr>{res}</tr>);

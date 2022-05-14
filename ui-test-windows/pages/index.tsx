@@ -20,7 +20,7 @@ return array;
 }
 
 export default function Home() {
-  const [dataArray,setDataArray]=useState(get2dKeys(5,5));
+  const [dataArray,setDataArray]=useState(get2dKeys(10,10));
 
   console.log(dataArray);
 
