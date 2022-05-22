@@ -1,45 +1,29 @@
 @import url('./reset.css');
 
 
-main,.page{
-  display: flex;
-  text-align: center;
-  align-items: center;
-  justify-content: center;
-}
-
-body,#__aleph,main{
-  width: 100vw;
-  height: 100vh;
-}
-
-.page{
-  padding: 3px;
-  margin: 3px;
-  border-color: #369;
-  border-width: 1px;
-  border-style: solid;
-  width: 98%;
-  height: 98%;
-  
-}
-
-
-.scrollBox{
+.scrollBox,.sideBox{
 
   border-color: #888;
   border-width: 1px;
   border-style: solid;
-  margin: 1px;
+  margin: 100px;
   padding: 1px;
   
   overflow-x: scroll;
   overflow-y: scroll;
 
-  width: 98%;
-  height: 98%;
+  width: 40%;
+  height: 80%;
+}
+.scrollBox{
+  position: relative;
 }
 
+.sideBox{
+  display: flex;
+  flex-flow: column;
+  align-items:flex-start;
+}
 
 .scrollItem{
   border-color: #444;
@@ -51,11 +35,7 @@ body,#__aleph,main{
 
 }
 
-::-webkit-scrollbar {  
-  display:none;
-}
-
-.card-frame{
+.card{
   border-style: solid;
   padding: 2px;
   margin: 2px;
@@ -64,5 +44,14 @@ body,#__aleph,main{
 
   width: 100px;
   height: 100px;
+  position:absolute;
   
 }
+
+/* .card{
+  top: 200px;
+  left: 30px;
+} */
+
+
+
