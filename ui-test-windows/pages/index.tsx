@@ -1,5 +1,5 @@
 import { useDeno } from "aleph/react";
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 
 import Card from "~/components/card.tsx";
 import CardArray from "~/components/cardArray.tsx";
@@ -19,14 +19,12 @@ function get2dKeys(lenRow: number, lenCol: number) {
 }
 
 export default function Home() {
-  const [dataArray, setDataArray] = useState(get2dKeys(20, 20));
+  const [dataArray, setDataArray] = useState(cardInitialize());
   
   const[boxX,setBoxX]=useState(0);
   const[boxY,setBoxY]=useState(0);
   const[catchX,setCatchX]=useState(0);
   const[catchY,setCatchY]=useState(0);
-
-  var cardsTemp:JSX.Element[]=[]
   
   console.log(dataArray);
 
@@ -35,19 +33,32 @@ export default function Home() {
     setBoxY(ev.currentTarget.clientHeight);
     setCatchX(ev.currentTarget.scrollLeft);
     setCatchY(ev.currentTarget.scrollTop);
-    // console.log(ev);
-    newCard(Math.floor(Math.random() * 500),Math.floor(Math.random() * 500));
+    // newCard(Math.floor(Math.random() * 500),Math.floor(Math.random() * 500));
+
+    newCard(ev.currentTarget.scrollLeft,ev.currentTarget.scrollTop);
   }
   
   function newCard(posX:number,posY:number){
+    // //HACK -> unnecessary
+    // var temp=dataArray;
+    // temp.push(nc);
+    // setDataArray(temp);
+    dataArray.push(createCard(posX,posY));
+    setDataArray(dataArray);
+  }
+  function createCard(posX:number,posY:number){
     const nc=<Card testKey={posX.toString()+":"+posY.toString()} posX={posX} posY={posY} />;
-    cardsTemp.push(nc);
     return nc;
   }
-  newCard(0,0);
-  newCard(50,0);
-  newCard(0,50);
-  newCard(100,100);
+  function cardInitialize(){
+    var ar:Array<JSX.Element>=[
+      createCard(0,0),
+      createCard(100,0),
+      createCard(0,100),
+      createCard(100,100)
+    ];
+    return ar;
+  }
   
   // const[cards , setCards]=useState<JSX.Element[]>(cardsTemp);
   
@@ -65,7 +76,10 @@ export default function Home() {
       <div className="scrollBox" onScroll={onScrollInBox}>
         {/* <CardArray keyArray={dataArray} key="unique" /> */}
         {/* <Card testKey="a"/> */}
-        {cardsTemp}
+        <div className="scrollPanel">
+          {dataArray}
+        </div>
+        
       </div>
       <div className="sideBox">
         <label>box width : {boxX}</label>
@@ -76,4 +90,8 @@ export default function Home() {
     </div>
   );
 
+}
+
+function componentDidMount() {
+throw new Error("Function not implemented.");
 }

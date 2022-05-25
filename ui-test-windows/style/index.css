@@ -18,6 +18,12 @@
 .scrollBox{
   position: relative;
 }
+.scrollPanel{
+
+  position: relative;
+  width: 2000px;
+  height: 2000px;
+}
 
 .sideBox{
   display: flex;
@@ -35,17 +41,22 @@
 
 }
 
-.card{
-  border-style: solid;
-  padding: 2px;
-  margin: 2px;
-  border-color: #ccc;
-  border-width: 2px;
+.cardFrame{
 
   width: 100px;
   height: 100px;
   position:absolute;
-  
+  align-items: center;
+}
+
+.cardInner{
+  border-style: solid;
+  border-color: #ccc;
+  border-width: 2px;
+  /* padding: 10px; */
+  margin: 5px;
+  width: 90px;
+  height: 90px;
 }
 
 /* .card{
