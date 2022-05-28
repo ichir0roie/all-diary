@@ -41,13 +41,13 @@ export default function Home() {
     const h= myRef.current!=null ?myRef.current.offsetHeight : 0;
     const posX=ev.currentTarget.scrollLeft+w/2;
     const posY=ev.currentTarget.scrollTop+h/2;
-    setRefX(posX);
-    setRefY(posY);
+    setRefX(w);
+    setRefY(h);
 
     // newCard(Math.floor(Math.random() * 500),Math.floor(Math.random() * 500));
 
 
-    newCard(posX,posY);
+    // newCard(posX,posY);
   }
   
   function newCard(posX:number,posY:number){
@@ -93,8 +93,8 @@ export default function Home() {
         </div>
       </div>
       <div className="sideBox">
-        <label>box width : {boxX}</label>
-        <label>box height x : {boxY}</label>
+        <label>box w : {boxX}</label>
+        <label>box h : {boxY}</label>
         <label>scroll x : {catchX}</label>
         <label>scroll y : {catchY}</label>
         <label>size x : {refX}</label>
@@ -103,8 +103,4 @@ export default function Home() {
     </div>
   );
 
-}
-
-function componentDidMount() {
-throw new Error("Function not implemented.");
 }
