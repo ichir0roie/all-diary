@@ -2,6 +2,7 @@ import { useDeno } from "aleph/react";
 import React, { useState,useEffect,useRef,useLayoutEffect } from "react";
 
 import {CreateDemoData} from "~/lib/createDemoData.ts";
+import {Diary} from "~/lib/classes/Diary.ts";
 
 export default function Home() {
   console.log("Home!")
@@ -10,9 +11,22 @@ export default function Home() {
     const cdd=new CreateDemoData(5,5);
     return cdd.array;
   }
-  const[diaryData,setDiaryData]=useState(getDiaryData());
+  const[diaryData,setDiaryData]=useState(new Array<Array<Diary>>());
   console.log(diaryData);
 
+  function setDiaryView(){
+    
+    const diaryData=getDiaryData();
+    diaryData.forEach(array=>{
+      array.forEach(diary=>{
+
+      });
+    });
+  }
+
+  function addDiaryView(dirX:number,dirY:number){
+
+  }
   
   //test values
   const[boxX,setBoxX]=useState(0);
