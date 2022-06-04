@@ -25,6 +25,8 @@
   
   overflow-x: scroll;
   overflow-y: scroll;
+  /* overflow-x: scroll;
+  overflow-y: scroll; */
 
   /* width: 80%; */
   height: 80%;
@@ -45,9 +47,9 @@
 .scrollPanel{
 
   position: relative;
-  background: rgba(181, 181, 181, 0.45);
-  width: 200px;
-  height: 200px;
+  background: #ddd;
+  /* width: 110vw;
+  height: 110vh; */
 }
 
 .sideBox{
@@ -60,7 +62,6 @@
 /* TODO cant't adjust scrollPanelSize */
 
 .cardFrame{
-
   width: 100px;
   height: 100px;
   position:absolute;
