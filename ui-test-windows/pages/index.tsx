@@ -1,26 +1,20 @@
 import { useDeno } from "aleph/react";
 import React, { useState,useEffect,useRef,useLayoutEffect } from "react";
 
-import Card from "~/components/card.tsx";
-import CardArray from "~/components/cardArray.tsx";
-
-function get2dKeys(lenRow: number, lenCol: number) {
-  var array = new Array<Array<String>>();
-  var count = 0;
-  for (var r = 0; r < lenRow; r++) {
-    var line = new Array<String>();
-    for (var c = 0; c < lenCol; c++) {
-      line.push(count.toString());
-      count++;
-    }
-    array.push(line);
-  }
-  return array;
-}
+import {CreateDemoData} from "~/lib/createDemoData.ts";
 
 export default function Home() {
-  const [dataArray, setDataArray] = useState(cardInitialize());
+  console.log("Home!")
+
+  function getDiaryData(){
+    const cdd=new CreateDemoData(5,5);
+    return cdd.array;
+  }
+  const[diaryData,setDiaryData]=useState(getDiaryData());
+  console.log(diaryData);
+
   
+  //test values
   const[boxX,setBoxX]=useState(0);
   const[boxY,setBoxY]=useState(0);
   const[catchX,setCatchX]=useState(0);
@@ -44,53 +38,16 @@ export default function Home() {
     setRefX(w);
     setRefY(h);
 
-    // newCard(Math.floor(Math.random() * 500),Math.floor(Math.random() * 500));
-
-
-    // newCard(posX,posY);
   }
   
   function newCard(posX:number,posY:number){
-    // //HACK -> unnecessary
-    // var temp=dataArray;
-    // temp.push(nc);
-    // setDataArray(temp);
-    dataArray.push(createCard(posX,posY));
-    setDataArray(dataArray);
   }
   function createCard(posX:number,posY:number){
-    const nc=<Card testKey={posX.toString()+":"+posY.toString()} posX={posX} posY={posY} />;
-    return nc;
   }
-  function cardInitialize(){
-    var ar:Array<JSX.Element>=[
-      createCard(0,0),
-      createCard(100,0),
-      createCard(0,100),
-      createCard(100,100)
-    ];
-    return ar;
-  }
-  
-  // const[cards , setCards]=useState<JSX.Element[]>(cardsTemp);
-  
+    
   return (
     <div className="page">
-      {
-        /* <table>
-        <tr>
-          <th><Card testKey="a" key="a"/></th>
-          <th><Card testKey="b" key="b"/></th>
-          <th><Card testKey="c" key="c"/></th>
-        </tr>
-      </table> */
-      }
       <div className="scrollBox" onScroll={onScrollInBox} ref={myRef}>
-        {/* <CardArray keyArray={dataArray} key="unique" /> */}
-        {/* <Card testKey="a"/> */}
-        <div className="scrollPanel">
-          {dataArray}
-        </div>
       </div>
       <div className="sideBox">
         <label>box w : {boxX}</label>
