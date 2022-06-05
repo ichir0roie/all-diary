@@ -12,12 +12,12 @@
 
  //なんと！"key"は予約語かなんかなのか！？
  export interface Prop{
-     arrayDiary:Array<Diary>
+     diaryArray:Array<Diary>
  };
  
  export function YearPanel(props:Prop) {
     let arrayDiaryCard:Array<JSX.Element>=[];
-    const arrayDiary=props.arrayDiary;
+    const arrayDiary=props.diaryArray;
     //TODO need map?
     arrayDiary.forEach(diary=>{
       const diaryCard=<DiaryCard  diary={diary}/>
