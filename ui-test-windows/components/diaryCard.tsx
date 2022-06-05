@@ -16,9 +16,7 @@ export function DiaryCard(prop:Prop) {
     // <div className="card-frame" key={props.testKey.toString()}>個々でやっても意味なかった。
     // https://dev.classmethod.jp/articles/avoiding-warningeach-child-in-a-list-should-have-a-unique-key-prop-in-react-apps-is-called-and-not-on-the-side-do-it-on-the-caller/
       <div className="DiaryCard">
-          <p>{diary.id}</p>
-          <p> : </p>
-          <p>{diary.date}</p>
+          <p>{diary.id} : {diary.date.toLocaleString()}</p>
           <br/>
           <p>{diary.text}</p><br/>
       </div>

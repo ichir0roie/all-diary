@@ -1,7 +1,6 @@
-@import url('./reset.css');
+@import url("./reset.css");
 
-
-.page{
+.page {
   padding: 3px;
   margin: 3px;
   border-color: #369;
@@ -13,16 +12,13 @@
   background: rgba(211, 211, 211, 0.119);
 }
 
-
-
-.scrollBox,.sideBox{
-
+.sideBox {
   border-color: #888;
   border-width: 1px;
   border-style: solid;
   margin: 100px;
   padding: 1px;
-  
+
   overflow-x: scroll;
   overflow-y: scroll;
   /* overflow-x: scroll;
@@ -32,56 +28,60 @@
   height: 80%;
 }
 
+.DiaryView {
+  border-color: #f00;
+  border-width: 2px;
+  border-style: solid;
+  margin: 100px;
+  padding: 1px;
 
-.scrollBox{
-  position: relative;
-  width: 70%;
-  /* https://ics.media/entry/17522/ */
-  display:  flex;
-  justify-content: center;
-  align-items: center;
-  box-sizing: content-box;
+  overflow-x: scroll;
+  overflow-y: scroll;
+  /* overflow-x: scroll;
+  overflow-y: scroll; */
+
+  width: 50%;
+  height: 80%;
+
+  margin: 4px;
+  padding: 4px;
+  background-color: #000;
 
 }
 
-.scrollPanel{
+.OverflowPanel {
+  display: flex;
+  flex-flow: row;
 
+  width: max-content;
+  height: max-content;
   position: relative;
-  background: #ddd;
-  /* width: 110vw;
-  height: 110vh; */
-}
 
-.sideBox{
+  margin : 3px;
+  padding: 3px;
+  background-color: #555;
+}
+.YearPanel {
+  width: auto;
+  height: auto;
+  margin: 2px;
+  padding: 2px;
+  border-color: #888;
+  border-width: 1px;
+  border-style: solid;
+
+  background-color: #999;
+}
+.DiaryCard {
   display: flex;
   flex-flow: column;
-  align-items:flex-start;
-  width: 10%;
-}
 
-/* TODO cant't adjust scrollPanelSize */
-
-.cardFrame{
-  width: 100px;
-  height: 100px;
-  position:absolute;
-  align-items: center;
-}
-
-.cardInner{
+  width: 200px;
+  height: 200px;
+  margin: 1px;
+  padding: 1px;
+  border-color: #888;
+  border-width: 1px;
   border-style: solid;
-  border-color: #ccc;
-  border-width: 2px;
-  /* padding: 10px; */
-  margin: 3px;
-  width: 90px;
-  height: 90px;
+  background-color: #fff;
 }
-
-/* .card{
-  top: 200px;
-  left: 30px;
-} */
-
-
-

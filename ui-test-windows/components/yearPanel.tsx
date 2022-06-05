@@ -16,19 +16,19 @@
  };
  
  export function YearPanel(props:Prop) {
-    let arrayDiaryCard:Array<JSX.Element>=[];
-    const arrayDiary=props.diaryArray;
+    let diaryCardArray:Array<JSX.Element>=[];
+    const diaryArray=props.diaryArray;
     //TODO need map?
-    arrayDiary.forEach(diary=>{
+    diaryArray.forEach(diary=>{
       const diaryCard=<DiaryCard  diary={diary}/>
-      arrayDiaryCard.push(diaryCard);
+      diaryCardArray.push(diaryCard);
     });
 
      return (
      // <div className="card-frame" key={props.testKey.toString()}>個々でやっても意味なかった。
      // https://dev.classmethod.jp/articles/avoiding-warningeach-child-in-a-list-should-have-a-unique-key-prop-in-react-apps-is-called-and-not-on-the-side-do-it-on-the-caller/
        <div className="YearPanel">
-         {arrayDiary}
+         {diaryCardArray}
        </div>
    )
  }

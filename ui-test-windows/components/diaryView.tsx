@@ -14,15 +14,16 @@
  //コンポーネントはその機能を内部で完結する？ので、
  //日記関連の表示機能はここがルートになる？
 
- //これはいらない？
- export interface Prop{
-      diaryData:Array<Array<Diary>>
- };
- 
- export function DiaryView(props:Prop) {
+
+ import {CreateDemoData} from "~/lib/createDemoData.ts";
+  
+ export function DiaryView() {
     let yearPanelArray:Array<JSX.Element>=[];
     //TODO need map?
-    props.diaryData.forEach(diaryArray=>{
+
+    const cda=new CreateDemoData(10,5);
+    const diaryData=cda.array;
+    diaryData.forEach(diaryArray=>{
       const diaryCard=<YearPanel  diaryArray={diaryArray}/>
       yearPanelArray.push(diaryCard);
     });
@@ -35,8 +36,6 @@
        <div className="DiaryView">
             <OverFlowPanel yearArray={yearPanelArray}/>
        </div>
-       
-       
    )
  }
  

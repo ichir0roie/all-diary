@@ -17,9 +17,11 @@ export class CreateDemoData{
                     d=getRandomInt(1,today.getDate()-1);
                 }
                 
-                const nDate=new Date(y,m,d);
+                const nDate=new Date(y,m,d,
+                    getRandomInt(0,23),getRandomInt(0,59),getRandomInt(0,59));
     
-                const diary:Diary=new Diary(id.toString(),nDate,cd.toString()+" : "+nDate.toDateString());
+                const testText="this is test text."
+                const diary:Diary=new Diary(id.toString(),nDate,testText);
                 ta.push(diary);
                 id+=1;
                 
