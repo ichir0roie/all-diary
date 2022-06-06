@@ -1,8 +1,8 @@
 import { useDeno } from "aleph/react";
 import React, { useState,useEffect,useRef,useLayoutEffect } from "react";
 
-import Card from "~/components/card.tsx";
-import CardArray from "~/components/cardArray.tsx";
+// import Card from "~/components/card.tsx";
+// import CardArray from "~/components/cardArray.tsx";
 
 export default function Home() {
   console.log("Home!")
@@ -44,12 +44,12 @@ export default function Home() {
     // temp.push(nc);
     // setDataArray(temp);
     // dataArray.push(createCard(posX,posY));
-    setDataArray([...dataArray,[createCard(posX,posY)]]);
+    // setDataArray([...dataArray,[createCard(posX,posY)]]);
     setDataArray(dataArray);
   }
   function createCard(posX:number,posY:number){
-    const nc=<Card testKey={posX.toString()+":"+posY.toString()} posX={posX} posY={posY} />;
-    return nc;
+    // const nc=<Card testKey={posX.toString()+":"+posY.toString()} posX={posX} posY={posY} />;
+    // return nc;
   }
   function cardInitialize(){
     let a:JSX.Element[][]= [[]];
