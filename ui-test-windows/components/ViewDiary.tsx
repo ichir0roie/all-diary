@@ -60,17 +60,27 @@ export function ViewDiary() {
     //check dir y
 
     if(dirX!=0){
-      addYear(dirX);
+      const isFuture:boolean=dirX>0?true:false;
+      deleteYear(isFuture);
+      addYear(isFuture);
     }
     if(dirY!=0){
-      orderDaily(dirY);
+      const isFuture:boolean=dirX>0?true:false;
+      deleteDay(isFuture);
+      addDay(isFuture);
     }
   }
 
-  function addYear(dir:number){
+  function addYear(isFuture:boolean){
   }
-  function orderDaily(dir:number){
+  function addDay(isFuture:boolean){
   }
+  function deleteYear(isFuture:boolean){
+  }
+  function deleteDay(isFuture:boolean){
+  }
+
+
   useEffect(()=>{
     myRef.current?.scrollTo(100,100);
   });
