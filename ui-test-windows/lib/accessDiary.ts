@@ -1,19 +1,28 @@
-import {Diary} from "./classes/Diary.ts"
-
+import {Diary} from "~/lib/classes/diary.ts";
+import * as RP from  "~/lib/classes/resultPacks.ts";
+import {CreateDemoData}from "~/lib/createDemoData.ts";
 
 
 export class AccessDiary{
+    cdd:CreateDemoData;
+    constructor(){
+        this.cdd=new CreateDemoData();
+    }
 
     // for initialize.
-    public getRange(years:Array<number>,dateFrom:Date,dateTo:Date):Array<Array<Diary>>{
+    public getRange(yearRange:number,dayRange:number):Array<Array<Diary>>{
         let data:Array<Array<Diary>>=[];
-
+        data=this.cdd.getRange(yearRange,dayRange);
         return data;
     }
 
-    public getYear(year:number,dateFrom:Date,dateTo:Date):Array<Diary>{
-        let data:Array<Diary>=[];
-        
+    public getYearlyData(
+        year:number,
+        baseDate:Date,
+        getRange:number
+        ):RP.ResultPackYearly{
+        let data:RP.ResultPackYearly;
+        data=this.cdd.getYear(year,baseDate,getRange);
         return data;
     }
     
@@ -21,25 +30,15 @@ export class AccessDiary{
     // public getDaily(year:number,dayPosFrom:number,dayPosTo:number){}
 
     // functions conscious of RDB.
-    public getDailyData(
+    public getDailyData(//TODO return ResultPackDaily
         years:Array<number>,
         getPositionFrom:number,
         getPositionSize:number,
         future:boolean
-        ):{[year:number]:YearlyEdgeDiary}{
-        let data:{[year:number]:YearlyEdgeDiary}={}
+        ):{[year:number]:RP.ResultPackDaily}{
+        let data:{[year:number]:RP.ResultPackDaily}={}
 
         return data;
     }
     
-}
-
-
-class YearlyEdgeDiary{
-    public past:Array<Diary>;
-    public future:Array<Diary>;
-    constructor(past:Array<Diary>,future:Array<Diary>){
-        this.past=past;
-        this.future=future;
-    }
 }

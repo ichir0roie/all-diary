@@ -1,7 +1,7 @@
 import React from 'react'
 import {useState} from 'react'
 
-import{Diary}from "~/lib/classes/Diary.ts";
+import{Diary}from "~/lib/classes/diary.ts";
 
 //なんと！"key"は予約語かなんかなのか！？
 export interface Prop{

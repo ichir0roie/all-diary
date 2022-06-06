@@ -4,7 +4,7 @@
 
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 
-import { Diary } from "~/lib/classes/Diary.ts";
+import { Diary } from "~/lib/classes/diary.ts";
 //  import{DiaryCard}from"~/components/diaryCard.tsx";
 import { PanelYearly } from "~/components/PanelYearly.tsx";
 import { PanelOverflow } from "~/components/PanelOverflow.tsx";
@@ -20,8 +20,9 @@ export function ViewDiary() {
   let PanelYearlyArray: Array<JSX.Element> = [];
   //TODO need map?
 
-  const cda = new CreateDemoData(10, 5);
-  const diaryData = cda.array;
+  const cda = new CreateDemoData();
+
+  const diaryData = cda.getRange(10,5);
   diaryData.forEach((diaryArray) => {
     const diaryCard = <PanelYearly diaryArray={diaryArray} />;
     PanelYearlyArray.push(diaryCard);
@@ -61,23 +62,26 @@ export function ViewDiary() {
 
     if(dirX!=0){
       const isFuture:boolean=dirX>0?true:false;
-      deleteYear(isFuture);
       addYear(isFuture);
     }
     if(dirY!=0){
       const isFuture:boolean=dirX>0?true:false;
-      deleteDay(isFuture);
       addDay(isFuture);
     }
   }
 
   function addYear(isFuture:boolean){
-  }
-  function addDay(isFuture:boolean){
+    deleteYear(isFuture);
+    
   }
   function deleteYear(isFuture:boolean){
+
+  }
+  function addDay(isFuture:boolean){
+    deleteDay(isFuture);
   }
   function deleteDay(isFuture:boolean){
+
   }
 
 

@@ -7,7 +7,7 @@
  import React from 'react'
  import {useState} from 'react'
 
- import{Diary}from "~/lib/classes/Diary.ts";
+ import{Diary}from "~/lib/classes/diary.ts";
  import{DiaryCard}from"~/components/diaryCard.tsx";
 
  //なんと！"key"は予約語かなんかなのか！？

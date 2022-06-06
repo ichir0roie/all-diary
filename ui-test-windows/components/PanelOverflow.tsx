@@ -2,7 +2,7 @@
  * スクロールイベントを取得するように子要素のサイズを拡大するための要素。
  */
 
-import { Diary } from "~/lib/classes/Diary.ts";
+import { Diary } from "~/lib/classes/diary.ts";
 import { DiaryCard } from "~/components/diaryCard.tsx";
 import { PanelYearly } from "~/components/PanelYearly.tsx";
 
