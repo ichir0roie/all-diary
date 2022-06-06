@@ -15,7 +15,8 @@ import { PanelOverflow } from "~/components/PanelOverflow.tsx";
 import { CreateDemoData } from "~/lib/createDemoData.ts";
 
 export function ViewDiary() {
-  const myRef = useRef<HTMLHeadingElement>(null);
+  const refViewDiary = useRef<HTMLHeadingElement>(null);
+  const refOfP=useRef<HTMLHeadingElement>(null);
 
   let PanelYearlyArray: Array<JSX.Element> = [];
   //TODO need map?
@@ -72,7 +73,7 @@ export function ViewDiary() {
 
   function addYear(isFuture:boolean){
     deleteYear(isFuture);
-    
+
   }
   function deleteYear(isFuture:boolean){
 
@@ -86,14 +87,14 @@ export function ViewDiary() {
 
 
   useEffect(()=>{
-    myRef.current?.scrollTo(100,100);
+    refViewDiary.current?.scrollTo(100,100);
   });
   
   return (
     // <div className="card-frame" key={props.testKey.toString()}>個々でやっても意味なかった。
     // https://dev.classmethod.jp/articles/avoiding-warningeach-child-in-a-list-should-have-a-unique-key-prop-in-react-apps-is-called-and-not-on-the-side-do-it-on-the-caller/
-    <div className="ViewDiary" onScroll={onScroll} ref={myRef}>
-      <PanelOverflow yearArray={viewData} />
+    <div className="ViewDiary" onScroll={onScroll} ref={refViewDiary}>
+      <PanelOverflow yearArray={viewData} ref={refOfP}/>
     </div>
   );
 }
