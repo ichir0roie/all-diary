@@ -20,10 +20,14 @@ export class AccessDiary{
         year:number,
         baseDate:Date,
         getRange:number
-        ):RP.ResultPackYearly{
+        ):Array<Diary>{
         let data:RP.ResultPackYearly;
         data=this.cdd.getYear(year,baseDate,getRange);
-        return data;
+        let arrayDiary:Array<Diary>=[]; 
+        arrayDiary=arrayDiary.concat(data.future); 
+        if(data.baseDate!=null)arrayDiary.push(data.baseDate);
+        arrayDiary=arrayDiary.concat(data.past);
+        return arrayDiary;
     }
     
     // concept functions.
@@ -35,7 +39,7 @@ export class AccessDiary{
         getPositionFrom:number,
         getPositionSize:number,
         future:boolean
-        ):{[year:number]:RP.ResultPackDaily}{
+        ):{  [year:number]:RP.ResultPackDaily}{
         let data:{[year:number]:RP.ResultPackDaily}={}
 
         return data;

@@ -2,7 +2,8 @@
  * 日記ビューのルート要素
  */
 
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState,useImperativeHandle } from "react";
+import {RefObjectOfP}from "~/lib/classes/viewDiaryInterfaces.ts";
 
 import { Diary } from "~/lib/classes/diary.ts";
 //  import{DiaryCard}from"~/components/diaryCard.tsx";
@@ -16,30 +17,35 @@ import { CreateDemoData } from "~/lib/createDemoData.ts";
 
 export function ViewDiary() {
   const refViewDiary = useRef<HTMLHeadingElement>(null);
-  const refOfP=useRef<HTMLHeadingElement>(null);
+  // const refOfP=useRef<RefObjectOfP>(null);
+  const refOfP=useRef<RefObjectOfP>(null);
+  console.log("print refOfP");
+  console.log(refOfP);
 
-  let PanelYearlyArray: Array<JSX.Element> = [];
+  let panelYearlyArray: Array<JSX.Element> = [];
   //TODO need map?
 
   const cda = new CreateDemoData();
 
   const diaryData = cda.getRange(10,5);
   diaryData.forEach((diaryArray) => {
-    const diaryCard = <PanelYearly diaryArray={diaryArray} />;
-    PanelYearlyArray.push(diaryCard);
+    const yearlyPanel = <PanelYearly diaryArray={diaryArray} />;
+    // const yearlyPanel =new PanelYearly(  {"diaryArray":diaryArray});
+    panelYearlyArray.push(yearlyPanel);
   });
 
-  const [viewData, setViewData] = useState(PanelYearlyArray);
+  const [viewData, setViewData] = useState(panelYearlyArray);
 
   //TODO change to "onKeyPress of window?"
   function onScroll(ev: React.UIEvent<HTMLDivElement>) {
+
     const d=new Date()
     console.log("Log : "+ d.toTimeString());
-    const scrollRateX:number=ev.currentTarget.scrollTop/(ev.currentTarget.scrollHeight-ev.currentTarget.clientHeight);
-    const scrollRateY:number=ev.currentTarget.scrollLeft/(ev.currentTarget.scrollWidth-ev.currentTarget.clientWidth);
-    console.log(scrollRateX);    
-    console.log(scrollRateY);    
-    console.log("-----------------");
+    // const scrollRateX:number=ev.currentTarget.scrollTop/(ev.currentTarget.scrollHeight-ev.currentTarget.clientHeight);
+    // const scrollRateY:number=ev.currentTarget.scrollLeft/(ev.currentTarget.scrollWidth-ev.currentTarget.clientWidth);
+    // console.log(scrollRateX);    
+    // console.log(scrollRateY);    
+    // console.log("-----------------");
     
     const scrollMaxY=ev.currentTarget.scrollHeight-ev.currentTarget.clientHeight;
     const scrollMaxX=ev.currentTarget.scrollWidth-ev.currentTarget.clientWidth;
@@ -58,7 +64,6 @@ export function ViewDiary() {
     }
     console.log(dirX);
     console.log(dirY);
-    console.log("-------------------------------\n");
     //check dir y
 
     if(dirX!=0){
@@ -73,7 +78,9 @@ export function ViewDiary() {
 
   function addYear(isFuture:boolean){
     deleteYear(isFuture);
-
+    console.log(refOfP.current);
+    console.log(refViewDiary);
+    refOfP.current?.addYear(isFuture);
   }
   function deleteYear(isFuture:boolean){
 
@@ -94,7 +101,7 @@ export function ViewDiary() {
     // <div className="card-frame" key={props.testKey.toString()}>個々でやっても意味なかった。
     // https://dev.classmethod.jp/articles/avoiding-warningeach-child-in-a-list-should-have-a-unique-key-prop-in-react-apps-is-called-and-not-on-the-side-do-it-on-the-caller/
     <div className="ViewDiary" onScroll={onScroll} ref={refViewDiary}>
-      <PanelOverflow yearArray={viewData} ref={refOfP}/>
+      <PanelOverflow yearlyArray={viewData} ref={refOfP}/> 
     </div>
   );
 }
