@@ -4,8 +4,9 @@
  * 後で追加する機能も必要やな。
  */
 
- import React from 'react'
- import {useState} from 'react'
+ import React, { forwardRef, useEffect, useLayoutEffect, useRef, useState,Ref ,useImperativeHandle} from "react";
+ import {RefObjPanelYearly}from "~/lib/classes/viewDiaryInterfaces.ts";
+
 
  import{Diary}from "~/lib/classes/diary.ts";
  import{DiaryCard}from"~/components/diaryCard.tsx";
@@ -13,11 +14,14 @@
  //なんと！"key"は予約語かなんかなのか！？
  export interface Prop{
      diaryArray:Array<Diary>
- };
+     year:number
+    };
  
- export function PanelYearly(props:Prop) {
-    let diaryCardArray:Array<JSX.Element>=[];
-    const diaryArray=props.diaryArray;
+ export const PanelYearly =forwardRef((props:Prop)  =>{
+   let diaryCardArray:Array<JSX.Element>=[]; 
+   const diaryArray=props.diaryArray;
+  //  const year=diaryArray[0].date.getFullYear();
+
     //TODO need map?
     diaryArray.forEach(diary=>{
       const diaryCard=<DiaryCard  diary={diary}/>
@@ -31,5 +35,5 @@
          {diaryCardArray}
        </div>
    )
- }
+ });
  

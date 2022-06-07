@@ -3,7 +3,7 @@
  */
 
 import React, { useEffect, useLayoutEffect, useRef, useState,useImperativeHandle } from "react";
-import {RefObjectOfP}from "~/lib/classes/viewDiaryInterfaces.ts";
+import {RefObjOverflowPanel}from "~/lib/classes/viewDiaryInterfaces.ts";
 
 import { Diary } from "~/lib/classes/diary.ts";
 //  import{DiaryCard}from"~/components/diaryCard.tsx";
@@ -17,8 +17,8 @@ import { CreateDemoData } from "~/lib/createDemoData.ts";
 
 export function ViewDiary() {
   const refViewDiary = useRef<HTMLHeadingElement>(null);
-  // const refOfP=useRef<RefObjectOfP>(null);
-  const refOfP=useRef<RefObjectOfP>(null);
+  // const refOfP=useRef<RefObjOverflowPanel>(null);
+  const refOfP=useRef<RefObjOverflowPanel>(null);
   console.log("print refOfP");
   console.log(refOfP);
 
@@ -29,7 +29,7 @@ export function ViewDiary() {
 
   const diaryData = cda.getRange(10,5);
   diaryData.forEach((diaryArray) => {
-    const yearlyPanel = <PanelYearly diaryArray={diaryArray} />;
+    const yearlyPanel = <PanelYearly diaryArray={diaryArray} year ={diaryArray[0].date.getFullYear()}/>;
     // const yearlyPanel =new PanelYearly(  {"diaryArray":diaryArray});
     panelYearlyArray.push(yearlyPanel);
   });
@@ -52,34 +52,38 @@ export function ViewDiary() {
     
     let dirX=0;
     let dirY=0;
-    if (ev.currentTarget.scrollLeft<100){
+    if (ev.currentTarget.scrollLeft<50){
+      ev.currentTarget.scrollLeft=100;
       dirX=-1;
-    }else if(ev.currentTarget.scrollLeft>scrollMaxX-100){
+    }else if(ev.currentTarget.scrollLeft>scrollMaxX-50){
+      ev.currentTarget.scrollLeft=scrollMaxX-100;
       dirX=+1;
     }
-    if (ev.currentTarget.scrollTop<100){
+    if (ev.currentTarget.scrollTop<50){
+      ev.currentTarget.scrollTop=100;
       dirY=-1;
-    }else if(ev.currentTarget.scrollTop>scrollMaxY-100){
+    }else if(ev.currentTarget.scrollTop>scrollMaxY-50){
+      ev.currentTarget.scrollTop  =scrollMaxY-100;
       dirY=+1;
     }
-    console.log(dirX);
-    console.log(dirY);
+    // console.log(dirX);
+    // console.log(dirY);
     //check dir y
 
     if(dirX!=0){
-      const isFuture:boolean=dirX>0?true:false;
+      const isFuture:boolean=dirX<0?true:false;
       addYear(isFuture);
     }
     if(dirY!=0){
-      const isFuture:boolean=dirX>0?true:false;
+      const isFuture:boolean=dirY<0?true:false;
       addDay(isFuture);
     }
   }
 
   function addYear(isFuture:boolean){
     deleteYear(isFuture);
-    console.log(refOfP.current);
-    console.log(refViewDiary);
+    // console.log(refOfP.current); 
+    // console.log(refViewDiary);
     refOfP.current?.addYear(isFuture);
   }
   function deleteYear(isFuture:boolean){
