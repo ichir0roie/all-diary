@@ -5,7 +5,7 @@
 import { Diary } from "~/lib/classes/diary.ts";
 import { DiaryCard } from "~/components/diaryCard.tsx";
 import { PanelYearly } from "~/components/PanelYearly.tsx";
-import { RefObjOverflowPanel } from "~/lib/classes/viewDiaryInterfaces.ts";
+import { RefObjOverflowPanel,RefObjPanelYearly } from "~/lib/classes/viewDiaryInterfaces.ts";
 
 import { AccessDiary } from "~/lib/accessDiary.ts";
 
@@ -21,84 +21,66 @@ import React, {
 //https://stackoverflow.com/questions/60554808/react-useref-with-typescript-and-functional-component
 
 export interface Prop {
-  yearlyArray: Array<JSX.Element>;
+  data: Array<Array<Diary>>;
 }
 
 //https://stackoverflow.com/questions/37949981/call-child-method-from-parent
-export const PanelOverflow = forwardRef(
-  (props: Prop, ref: Ref<RefObjOverflowPanel>) => {
-    useImperativeHandle(ref, () => ({ addYear }));
-    console.log("print ref");
-    // console.log(props.ref);
-    let arrayDiaryCard: Array<JSX.Element> = [];
-    const [yearlyArray, setYearlyArray] = useState(props.yearlyArray);
-
-    const myRef = useRef<HTMLHeadingElement>(null);
-
-    function addYear(isFuture: boolean) {
-      const ad = new AccessDiary();
-      let tgtYear = 0;
-      console.log(yearlyArray);
-      if (isFuture) {
-        tgtYear = yearlyArray[0].props.year + 1;
-      } else {
-        tgtYear = yearlyArray[yearlyArray.length - 1].props.year - 1;
-      }
-      const diaryArray = ad.getYearlyData(tgtYear, new Date(), 10);
-      const yearlyPanel = (
-        <PanelYearly
+export const PanelOverflow =  (props: Prop) => {
+   
+    let tempPanels=new Array<JSX.Element>();
+    function initializePanelAndRef(){
+      props.data.forEach(diaryArray=>{
+        const year=diaryArray[0].date.getFullYear(); 
+        const panel=<PanelYearly
           diaryArray={diaryArray}
-          year={diaryArray[0].date.getFullYear()}
+          year={year}
         />
-      );
-      if (isFuture) {
-        yearlyArray.unshift(yearlyPanel);
-      } else {
-        yearlyArray.shift();
-        // yearlyArray.slice(1);
-        yearlyArray.push(yearlyPanel);
-      }
-      setYearlyArray([...yearlyArray]);
+        tempPanels.push(panel);  
+      });
     }
+    initializePanelAndRef();
+ 
+    // function addPanelYearly(
+    //   diaryArray:Array<Diary>,
+    //   year:number,
+    //   isFuture:boolean){
+    //   // const ref =useRef<RefObjPanelYearly>(null);
+    //   const panel=<PanelYearly
+    //     diaryArray={diaryArray}
+    //     year={year}
+    //     // ref={ref}
+    //   />
+    //   if (isFuture)  {
+    //     panels.unshift(panel);
+    //     // refs.unshift(ref);
+    //   } else {
+    //     panels.shift();
+    //     panels.push(panel);
+    //     refs.shift();
+    //     // refs.push(ref);
+    //   }
+    //   setPanels([...panels]);
+    //   setRefs([...refs]);
+    // }
 
-    // useEffect(()=>{
-    //   myRef.current?.scrollTo(100,100);
-    //   console.log(myRef.current);
-    // });
+    // function addYear(isFuture: boolean) {
+    //   console.log( "addYear");
+    //   const ad = new AccessDiary();
+    //   let tgtYear = 0;
+    //   if (isFuture) {
+    //     tgtYear = panels[0].props.year + 1;
+    //   } else {
+    //     tgtYear = panels[panels.length - 1].props.year - 1;
+    //   }
+    //   const diaryArray = ad.getYearlyData(tgtYear, new Date(), 10);
+    //   addPanelYearly(diaryArray,tgtYear,isFuture);
+    // }
 
     return (
       // <div className="card-frame" key={props.testKey.toString()}>個々でやっても意味なかった。
       // https://dev.classmethod.jp/articles/avoiding-warningeach-child-in-a-list-should-have-a-unique-key-prop-in-react-apps-is-called-and-not-on-the-side-do-it-on-the-caller/
-      <div className="PanelOverflow" ref={myRef}>
-        {yearlyArray}
+      <div className="PanelOverflow">
+        {tempPanels}
       </div>
     );
-  },
-);
-
-export function PanelOverflowBK(props: Prop, ref: Ref<RefObjOverflowPanel>) {
-  useImperativeHandle(ref, () => ({ addYear }));
-  // console.log( "print ref");
-  // console.log(props.ref);
-  let arrayDiaryCard: Array<JSX.Element> = [];
-  const [yearArray, setYearArray] = useState(props.yearlyArray);
-
-  const myRef = useRef<HTMLHeadingElement>(null);
-
-  function addYear(isFuture: boolean) {
-    console.log("add year : " + isFuture);
   }
-
-  // useEffect(()=>{
-  //   myRef.current?.scrollTo(100,100);
-  //   console.log(myRef.current);
-  // });
-
-  return (
-    // <div className="card-frame" key={props.testKey.toString()}>個々でやっても意味なかった。
-    // https://dev.classmethod.jp/articles/avoiding-warningeach-child-in-a-list-should-have-a-unique-key-prop-in-react-apps-is-called-and-not-on-the-side-do-it-on-the-caller/
-    <div className="PanelOverflow" ref={myRef}>
-      {yearArray}
-    </div>
-  );
-}

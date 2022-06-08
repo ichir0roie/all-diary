@@ -17,16 +17,21 @@
      year:number
     };
  
- export const PanelYearly =forwardRef((props:Prop)  =>{
+ export const PanelYearly =forwardRef((props:Prop,ref:Ref<RefObjPanelYearly>)  =>{
+  useImperativeHandle(ref, () => ({ addDay,year}));
    let diaryCardArray:Array<JSX.Element>=[]; 
    const diaryArray=props.diaryArray;
   //  const year=diaryArray[0].date.getFullYear();
 
-    //TODO need map?
+    //TODO need map? -> don't need map.
     diaryArray.forEach(diary=>{
       const diaryCard=<DiaryCard  diary={diary}/>
       diaryCardArray.push(diaryCard);
     });
+    const year=props.year;
+    function addDay(){
+
+    }
 
      return (
      // <div className="card-frame" key={props.testKey.toString()}>個々でやっても意味なかった。

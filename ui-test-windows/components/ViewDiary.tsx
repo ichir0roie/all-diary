@@ -13,63 +13,45 @@ import { PanelOverflow } from "~/components/PanelOverflow.tsx";
 //コンポーネントはその機能を内部で完結する？ので、
 //日記関連の表示機能はここがルートになる？
 
-import { CreateDemoData } from "~/lib/createDemoData.ts";
+import { AccessDiary } from "~/lib/accessDiary.ts";
 
 export function ViewDiary() {
   const refViewDiary = useRef<HTMLHeadingElement>(null);
   // const refOfP=useRef<RefObjOverflowPanel>(null);
-  const refOfP=useRef<RefObjOverflowPanel>(null);
-  console.log("print refOfP");
-  console.log(refOfP);
 
-  let panelYearlyArray: Array<JSX.Element> = [];
-  //TODO need map?
+  const ad = new AccessDiary();
 
-  const cda = new CreateDemoData();
-
-  const diaryData = cda.getRange(10,5);
-  diaryData.forEach((diaryArray) => {
-    const yearlyPanel = <PanelYearly diaryArray={diaryArray} year ={diaryArray[0].date.getFullYear()}/>;
-    // const yearlyPanel =new PanelYearly(  {"diaryArray":diaryArray});
-    panelYearlyArray.push(yearlyPanel);
-  });
-
-  const [viewData, setViewData] = useState(panelYearlyArray);
-
-  //TODO change to "onKeyPress of window?"
+  const [diaryData,setDiaryData] =useState(ad.getRange(10,5)) ;
+  
   function onScroll(ev: React.UIEvent<HTMLDivElement>) {
 
     const d=new Date()
     console.log("Log : "+ d.toTimeString());
-    // const scrollRateX:number=ev.currentTarget.scrollTop/(ev.currentTarget.scrollHeight-ev.currentTarget.clientHeight);
-    // const scrollRateY:number=ev.currentTarget.scrollLeft/(ev.currentTarget.scrollWidth-ev.currentTarget.clientWidth);
-    // console.log(scrollRateX);    
-    // console.log(scrollRateY);    
-    // console.log("-----------------");
     
     const scrollMaxY=ev.currentTarget.scrollHeight-ev.currentTarget.clientHeight;
     const scrollMaxX=ev.currentTarget.scrollWidth-ev.currentTarget.clientWidth;
     
     let dirX=0;
     let dirY=0;
-    if (ev.currentTarget.scrollLeft<50){
-      ev.currentTarget.scrollLeft=100;
+    const marginSizeX =100;
+    const cardSizeX=200;
+    const marginSizeY =100;
+    const cardSizeY=200;
+    
+    if (ev.currentTarget.scrollLeft<marginSizeX){
+      ev.currentTarget.scrollLeft=marginSizeX+cardSizeX;
       dirX=-1;
-    }else if(ev.currentTarget.scrollLeft>scrollMaxX-50){
-      ev.currentTarget.scrollLeft=scrollMaxX-100;
+    }else if(ev.currentTarget.scrollLeft>scrollMaxX-marginSizeX){
+      ev.currentTarget.scrollLeft=scrollMaxX-marginSizeX-cardSizeX;
       dirX=+1;
     }
-    if (ev.currentTarget.scrollTop<50){
-      ev.currentTarget.scrollTop=100;
+    if (ev.currentTarget.scrollTop<marginSizeY){
+      ev.currentTarget.scrollTop=marginSizeY +cardSizeY;
       dirY=-1;
-    }else if(ev.currentTarget.scrollTop>scrollMaxY-50){
-      ev.currentTarget.scrollTop  =scrollMaxY-100;
+    }else if(ev.currentTarget.scrollTop>scrollMaxY-marginSizeY){
+      ev.currentTarget.scrollTop  =scrollMaxY-marginSizeY-cardSizeY;
       dirY=+1;
     }
-    // console.log(dirX);
-    // console.log(dirY);
-    //check dir y
-
     if(dirX!=0){
       const isFuture:boolean=dirX<0?true:false;
       addYear(isFuture);
@@ -81,31 +63,39 @@ export function ViewDiary() {
   }
 
   function addYear(isFuture:boolean){
-    deleteYear(isFuture);
-    // console.log(refOfP.current); 
-    // console.log(refViewDiary);
-    refOfP.current?.addYear(isFuture);
+    // refOfP.current?.addYear(isFuture);
+    let tgtYear = 0;
+      if (isFuture) {
+        tgtYear = diaryData[0][0].date.getFullYear() + 1;
+      } else {
+        tgtYear = diaryData[diaryData.length-1][0].date.getFullYear() - 1;
+      }
+    const diaryArray = ad.getYearlyData(tgtYear, new Date(), 10);
+    // diaryData.push(diaryArray);
+      if (isFuture)  {
+        diaryData.splice(-1);
+        diaryData.unshift(diaryArray);
+      } else {
+        diaryData.shift();
+        diaryData.push(diaryArray);
+      }
+    setDiaryData([...diaryData]); 
+    // console.log(diaryData);
+    console.log(diaryData.length);
   }
-  function deleteYear(isFuture:boolean){
-
-  }
-  function addDay(isFuture:boolean){
-    deleteDay(isFuture);
-  }
-  function deleteDay(isFuture:boolean){
-
+  function addDay(isFuture:boolean){ 
+    // refOfP.current?.addDays(isFuture);
   }
 
-
-  useEffect(()=>{
-    refViewDiary.current?.scrollTo(100,100);
-  });
+  // useEffect(()=>{
+  //   refViewDiary.current?.scrollTo(100,100);
+  // });
   
   return (
     // <div className="card-frame" key={props.testKey.toString()}>個々でやっても意味なかった。
     // https://dev.classmethod.jp/articles/avoiding-warningeach-child-in-a-list-should-have-a-unique-key-prop-in-react-apps-is-called-and-not-on-the-side-do-it-on-the-caller/
     <div className="ViewDiary" onScroll={onScroll} ref={refViewDiary}>
-      <PanelOverflow yearlyArray={viewData} ref={refOfP}/> 
+      <PanelOverflow data={diaryData}/> 
     </div>
   );
 }
