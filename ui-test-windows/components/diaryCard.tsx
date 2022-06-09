@@ -1,6 +1,6 @@
 import React, { forwardRef, useEffect, useLayoutEffect, useRef, useState,Ref ,useImperativeHandle} from "react";
 
-import{Diary}from "~/lib/classes/diary.ts";
+import{Diary}from "~/lib/classes/models.ts";
 
 //なんと！"key"は予約語かなんかなのか！？
 export interface Prop{

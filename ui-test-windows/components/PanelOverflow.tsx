@@ -2,7 +2,7 @@
  * スクロールイベントを取得するように子要素のサイズを拡大するための要素。
  */
 
-import { Diary } from "~/lib/classes/diary.ts";
+import { Diary } from "~/lib/classes/models.ts";
 import { DiaryCard } from "~/components/diaryCard.tsx";
 import { PanelYearly } from "~/components/PanelYearly.tsx";
 import { RefObjOverflowPanel,RefObjPanelYearly } from "~/lib/classes/viewDiaryInterfaces.ts";
@@ -33,49 +33,12 @@ export const PanelOverflow =  (props: Prop) => {
         const year=diaryArray[0].date.getFullYear(); 
         const panel=<PanelYearly
           diaryArray={diaryArray}
-          year={year}
         />
         tempPanels.push(panel);  
       });
     }
     initializePanelAndRef();
  
-    // function addPanelYearly(
-    //   diaryArray:Array<Diary>,
-    //   year:number,
-    //   isFuture:boolean){
-    //   // const ref =useRef<RefObjPanelYearly>(null);
-    //   const panel=<PanelYearly
-    //     diaryArray={diaryArray}
-    //     year={year}
-    //     // ref={ref}
-    //   />
-    //   if (isFuture)  {
-    //     panels.unshift(panel);
-    //     // refs.unshift(ref);
-    //   } else {
-    //     panels.shift();
-    //     panels.push(panel);
-    //     refs.shift();
-    //     // refs.push(ref);
-    //   }
-    //   setPanels([...panels]);
-    //   setRefs([...refs]);
-    // }
-
-    // function addYear(isFuture: boolean) {
-    //   console.log( "addYear");
-    //   const ad = new AccessDiary();
-    //   let tgtYear = 0;
-    //   if (isFuture) {
-    //     tgtYear = panels[0].props.year + 1;
-    //   } else {
-    //     tgtYear = panels[panels.length - 1].props.year - 1;
-    //   }
-    //   const diaryArray = ad.getYearlyData(tgtYear, new Date(), 10);
-    //   addPanelYearly(diaryArray,tgtYear,isFuture);
-    // }
-
     return (
       // <div className="card-frame" key={props.testKey.toString()}>個々でやっても意味なかった。
       // https://dev.classmethod.jp/articles/avoiding-warningeach-child-in-a-list-should-have-a-unique-key-prop-in-react-apps-is-called-and-not-on-the-side-do-it-on-the-caller/

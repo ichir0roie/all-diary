@@ -1,4 +1,4 @@
-import {Diary} from "~/lib/classes/diary.ts";
+import {Diary} from "~/lib/classes/models.ts";
 import * as RP from  "~/lib/classes/resultPacks.ts";
 import {CreateDemoData}from "~/lib/createDemoData.ts";
 
@@ -6,11 +6,13 @@ import {CreateDemoData}from "~/lib/createDemoData.ts";
 export class AccessDiary{
     cdd:CreateDemoData;
     constructor(){
+        console.log("init ad.");
         this.cdd=new CreateDemoData();
     }
 
     // for initialize.
     public getRange(yearRange:number,dayRange:number):Array<Array<Diary>>{
+        console.log("get range");
         let data:Array<Array<Diary>>=[];
         data=this.cdd.getRange(yearRange,dayRange);
         return data;
@@ -21,13 +23,10 @@ export class AccessDiary{
         baseDate:Date,
         getRange:number
         ):Array<Diary>{
-        let data:RP.ResultPackYearly;
+            console.log("get yearly")
+        let data:Array<Diary>;//todo ?
         data=this.cdd.getYear(year,baseDate,getRange);
-        let arrayDiary:Array<Diary>=[]; 
-        arrayDiary=arrayDiary.concat(data.future); 
-        if(data.baseDate!=null)arrayDiary.push(data.baseDate);
-        arrayDiary=arrayDiary.concat(data.past);
-        return arrayDiary;
+        return data;
     }
     
     // concept functions.
@@ -39,10 +38,11 @@ export class AccessDiary{
         getPositionFrom:number,
         getPositionSize:number,
         future:boolean
-        ):{  [year:number]:RP.ResultPackDaily}{
-        let data:{[year:number]:RP.ResultPackDaily}={}
-
-        return data;
+        ):Array<Array<Diary>>{
+            console.log("get daily")
+            let data=new Array<Array<Diary>>();
+            data=this.cdd.getDailyData(years);
+            return data;
     }
     
 }

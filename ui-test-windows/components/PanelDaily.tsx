@@ -8,7 +8,7 @@
  import React from 'react'
  import {useState} from 'react'
 
- import{Diary}from "~/lib/classes/diary.ts";
+ import{Diary}from "~/lib/classes/models.ts";
 
  export interface Props{
      arrayDiary:Array<Diary>

@@ -5,20 +5,17 @@
  */
 
  import React, { forwardRef, useEffect, useLayoutEffect, useRef, useState,Ref ,useImperativeHandle} from "react";
- import {RefObjPanelYearly}from "~/lib/classes/viewDiaryInterfaces.ts";
 
 
- import{Diary}from "~/lib/classes/diary.ts";
+ import{Diary}from "~/lib/classes/models.ts";
  import{DiaryCard}from"~/components/diaryCard.tsx";
 
  //なんと！"key"は予約語かなんかなのか！？
  export interface Prop{
      diaryArray:Array<Diary>
-     year:number
     };
  
- export const PanelYearly =forwardRef((props:Prop,ref:Ref<RefObjPanelYearly>)  =>{
-  useImperativeHandle(ref, () => ({ addDay,year}));
+ export const PanelYearly =(props:Prop)  =>{
    let diaryCardArray:Array<JSX.Element>=[]; 
    const diaryArray=props.diaryArray;
   //  const year=diaryArray[0].date.getFullYear();
@@ -28,10 +25,6 @@
       const diaryCard=<DiaryCard  diary={diary}/>
       diaryCardArray.push(diaryCard);
     });
-    const year=props.year;
-    function addDay(){
-
-    }
 
      return (
      // <div className="card-frame" key={props.testKey.toString()}>個々でやっても意味なかった。
@@ -40,5 +33,5 @@
          {diaryCardArray}
        </div>
    )
- });
+ };
  

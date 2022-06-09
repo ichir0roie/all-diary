@@ -1,35 +1,26 @@
-import { Diary } from "./classes/diary.ts";
-import * as RP from  "~/lib/classes/resultPacks.ts";
+import { Diary } from "./classes/models.ts";
 
 export class CreateDemoData {
-  constructor() {}
+  today:Date;
+  nowTemp:Date;
+  testId=0;
+  constructor() {
+    this.today = new Date(
+      new Date().toLocaleString("jp", { timeZone: "Asia/Tokyo" }),
+    );
+    this.nowTemp=new Date(
+      new Date().toLocaleString("jp", { timeZone: "Asia/Tokyo" }),
+    );
+  }
 
   public getRange(years: number, size: number) {
     let array: Array<Array<Diary>> = [];
-    const today: Date = new Date(
-      new Date().toLocaleString("jp", { timeZone: "Asia/Tokyo" }),
-    );
     let id = 0;
     for (let cy = 0; cy < years; cy++) {
       let ta: Array<Diary> = [];
       for (let cd = 0; cd < size; cd++) {
-        let y = today.getFullYear() - cy;
-        let m = getRandomInt(0, 11);
-        let d = getRandomInt(1, 31);
-        //HACK
-        if (cy == 0) {
-          m = getRandomInt(0, today.getMonth() - 1);
-          d = getRandomInt(1, today.getDate() - 1);
-        }
-
-        const nDate = new Date(
-          y,
-          m,
-          d,
-          getRandomInt(0, 23),
-          getRandomInt(0, 59),
-          getRandomInt(0, 59),
-        );
+        let y = this.today.getFullYear() - cy;
+        const nDate = this.getRandomDate(y,true);
 
         const testText = "this is test text.";
         const diary: Diary = new Diary(id.toString(), nDate, testText);
@@ -49,67 +40,63 @@ export class CreateDemoData {
     year: number,
     baseDate: Date,
     getRange: number,
-  ):RP.ResultPackYearly{
-    let ret=new RP.ResultPackYearly();
-    const today: Date = baseDate;
-
-    let id = 0;
+  ):Array<Diary>{
     let ta: Array<Diary> = [];
     for (let cd = 0; cd < getRange; cd++) {
-      let y = year;
-      let m = getRandomInt(0, today.getMonth());
-      let d = getRandomInt(1, today.getDate());
-
-      const nDate = new Date(
-        y,
-        m,
-        d,
-        getRandomInt(0, 23),
-        getRandomInt(0, 59),
-        getRandomInt(0, 59),
-      );
-
-      const testText = "this is test text.";
-      const diary: Diary = new Diary(id.toString(), nDate, testText);
-      ta.push(diary);
-      id += 1;
+      ta.push(this.getRandomDiary(this.getRandomDate(year,true)));
     }
     ta = ta.sort(function (a: Diary, b: Diary) {
       return b.date.getTime() - a.date.getTime();
     });
-    ret.future=ta;
     
-    ta=[];
-    for (let cd = 0; cd < getRange; cd++) {
-      let y = year;
-      let m = getRandomInt(today.getMonth(),11);
-      let d = getRandomInt( today.getDate(),31);
-
-      const nDate = new Date(
-        y,
-        m,
-        d,
-        getRandomInt(0, 23),
-        getRandomInt(0, 59),
-        getRandomInt(0, 59),
-      );
-
-      const testText = "this is test text.";
-      const diary: Diary = new Diary(id.toString(), nDate, testText);
-      ta.push(diary);
-      id += 1;
-    }
-    ta = ta.sort(function (a: Diary, b: Diary) {
-      return b.date.getTime() - a.date.getTime();
-    });
-    ret.past=ta;
-
-    const testText = "this is test text.";
-    const diary: Diary = new Diary(id.toString(),baseDate , testText);
-    ret.baseDate=diary;
-
-    return ret;
+    return ta;
   }
+  
+    // functions conscious of RDB.
+    public getDailyData(//TODO return ResultPackDaily
+        years:Array<number>,
+        ):Array<Array<Diary>>{
+            let data=new Array<Array<Diary>>();
+            years.forEach(y=>{
+              let diary:Diary=this.getRandomDiary(this.getRandomDate(y,true));
+              data.push([diary]);
+            });
+            return data;
+    }
+
+    public getRandomDate(year:number,isFuture:boolean):Date{
+      // let d=new Date(
+      //   year,
+      //   getRandomInt(this.today.getMonth(),11),
+      //   getRandomInt( this.today.getDate(),31),
+      //   getRandomInt(0, 23),
+      //   getRandomInt(0, 59),
+      //   getRandomInt(0, 59),
+      // );
+      // return d;
+      if(isFuture){
+        this.nowTemp.setTime(this.nowTemp.getTime()+1000*60*60*24);
+      }else{
+        this.nowTemp.setTime(this.nowTemp.getTime()-1000*60*60*24);
+      }
+     
+     this.nowTemp.setFullYear(year);
+     const newDate:Date=new Date(this.nowTemp.getTime());
+      return newDate;
+    }
+
+    public resetRandomDate(){
+      this.nowTemp=new Date(
+        new Date().toLocaleString("jp", { timeZone: "Asia/Tokyo" }),
+      );
+    }
+
+    public getRandomDiary(date:Date){
+      const testText = "this is test text.";
+      let d= new Diary(this.testId.toString(),date,testText);
+      this.testId+=1;
+      return d;
+    }
 }
 
 function getRandomInt(min: number, max: number) {
@@ -117,3 +104,5 @@ function getRandomInt(min: number, max: number) {
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
 }
+
+

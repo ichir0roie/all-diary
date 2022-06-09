@@ -3,30 +3,41 @@
  */
 
 import React, { useEffect, useLayoutEffect, useRef, useState,useImperativeHandle } from "react";
-import {RefObjOverflowPanel}from "~/lib/classes/viewDiaryInterfaces.ts";
 
-import { Diary } from "~/lib/classes/diary.ts";
-//  import{DiaryCard}from"~/components/diaryCard.tsx";
-import { PanelYearly } from "~/components/PanelYearly.tsx";
 import { PanelOverflow } from "~/components/PanelOverflow.tsx";
+
+
+
 
 //コンポーネントはその機能を内部で完結する？ので、
 //日記関連の表示機能はここがルートになる？
 
 import { AccessDiary } from "~/lib/accessDiary.ts";
 
+const viewLengthDay =10;
+const viewLengthYear=10;
+const ad=new AccessDiary();
+const initData=ad.getRange(viewLengthYear,viewLengthDay);
+
 export function ViewDiary() {
+  console.log("call ViewDiary.")
   const refViewDiary = useRef<HTMLHeadingElement>(null);
   // const refOfP=useRef<RefObjOverflowPanel>(null);
 
-  const ad = new AccessDiary();
+  let viewPosition=0;
+  const[init,setInit]=useState(false);
 
-  const [diaryData,setDiaryData] =useState(ad.getRange(10,5)) ;
-  
+  // const [diaryData,setDiaryData] =useState(ad.getRange(viewLengthYear,viewLengthDay)) ;// this is calc anytime.
+  const [diaryData,setDiaryData] =useState(initData) ;
+
+  const baseDate=new Date();
+
+//todo スクロールポジションとデータ管理はすべてここでできる。
+
   function onScroll(ev: React.UIEvent<HTMLDivElement>) {
 
-    const d=new Date()
-    console.log("Log : "+ d.toTimeString());
+    const d=new Date();
+    console.log("Log : "+ d.toTimeString());                     
     
     const scrollMaxY=ev.currentTarget.scrollHeight-ev.currentTarget.clientHeight;
     const scrollMaxX=ev.currentTarget.scrollWidth-ev.currentTarget.clientWidth;
@@ -58,11 +69,15 @@ export function ViewDiary() {
     }
     if(dirY!=0){
       const isFuture:boolean=dirY<0?true:false;
-      addDay(isFuture);
+      addDays(isFuture);
     }
+    setDiaryData([...diaryData]); 
+    console.log(diaryData);
+    console.log(diaryData.length);
   }
 
   function addYear(isFuture:boolean){
+    console.log( "add year vd.");
     // refOfP.current?.addYear(isFuture);
     let tgtYear = 0;
       if (isFuture) {
@@ -70,7 +85,7 @@ export function ViewDiary() {
       } else {
         tgtYear = diaryData[diaryData.length-1][0].date.getFullYear() - 1;
       }
-    const diaryArray = ad.getYearlyData(tgtYear, new Date(), 10);
+    const diaryArray = ad.getYearlyData(tgtYear,baseDate, viewLengthDay);
     // diaryData.push(diaryArray);
       if (isFuture)  {
         diaryData.splice(-1);
@@ -79,18 +94,39 @@ export function ViewDiary() {
         diaryData.shift();
         diaryData.push(diaryArray);
       }
-    setDiaryData([...diaryData]); 
-    // console.log(diaryData);
-    console.log(diaryData.length);
   }
-  function addDay(isFuture:boolean){ 
+  function addDays(isFuture:boolean){ 
+    console.log( "add day vd.");
+    if (isFuture){
+      viewPosition+=1;
+    }else{
+      viewPosition-=1;
+    }
+    let years=new Array<number>();
+    diaryData.forEach(year=>{years.push(year[0].date.getFullYear());});
+    let daysYearly=ad.getDailyData(years,viewPosition,viewLengthDay,isFuture);
+    for(let c=0;c<daysYearly.length;c++){
+      if(isFuture){
+        diaryData[c].splice(-1);
+        diaryData[c]=[...daysYearly[c],...diaryData[c]];
+      }else{
+        diaryData[c].shift();
+        diaryData[c]=[...diaryData[c],...daysYearly[c]];
+      }
+    };
     // refOfP.current?.addDays(isFuture);
   }
 
-  // useEffect(()=>{
-  //   refViewDiary.current?.scrollTo(100,100);
-  // });
+  useEffect(()=>{
+    if(!init){
+    console.log("init")
+    refViewDiary.current?.scrollTo(100,100);
+    setInit(true);
+  }  
   
+  });
+  
+
   return (
     // <div className="card-frame" key={props.testKey.toString()}>個々でやっても意味なかった。
     // https://dev.classmethod.jp/articles/avoiding-warningeach-child-in-a-list-should-have-a-unique-key-prop-in-react-apps-is-called-and-not-on-the-side-do-it-on-the-caller/
