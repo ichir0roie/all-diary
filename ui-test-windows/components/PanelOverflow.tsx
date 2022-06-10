@@ -4,7 +4,7 @@
 
 import { Diary } from "~/lib/classes/models.ts";
 import { DiaryCard } from "~/components/diaryCard.tsx";
-import { PanelYearly } from "~/components/PanelYearly.tsx";
+import { PanelYearly } from "~/components/panelYearly.tsx";
 import { RefObjOverflowPanel,RefObjPanelYearly } from "~/lib/classes/viewDiaryInterfaces.ts";
 
 import { AccessDiary } from "~/lib/accessDiary.ts";

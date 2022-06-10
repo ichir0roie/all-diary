@@ -27,52 +27,19 @@ export default function Home() {
     if(myRef.current!=null)setRefY(myRef.current.offsetWidth);    
     const w= myRef.current!=null ?myRef.current.offsetWidth : 0;
     const h= myRef.current!=null ?myRef.current.offsetHeight : 0;
-    const posX=ev.currentTarget.scrollLeft+w/2;
-    const posY=ev.currentTarget.scrollTop+h/2;
     setRefX(w);
     setRefY(h);
-
-    // newCard(Math.floor(Math.random() * 500),Math.floor(Math.random() * 500));
-
-
-    // newCard(posX,posY);
   }
   
-  function newCard(posX:number,posY:number){
-    // //HACK -> unnecessary
-    // var temp=dataArray;
-    // temp.push(nc);
-    // setDataArray(temp);
-    // dataArray.push(createCard(posX,posY));
-    // setDataArray([...dataArray,[createCard(posX,posY)]]);
-    setDataArray(dataArray);
-  }
-  function createCard(posX:number,posY:number){
-    // const nc=<Card testKey={posX.toString()+":"+posY.toString()} posX={posX} posY={posY} />;
-    // return nc;
-  }
   function cardInitialize(){
     let a:JSX.Element[][]= [[]];
     return a;
   }
   const cardBox=<div className="scrollPanel">{dataArray}</div>
   
-  // const[cards , setCards]=useState<JSX.Element[]>(cardsTemp);
-  
   return (
     <div className="page">
-      {
-        /* <table>
-        <tr>
-          <th><Card testKey="a" key="a"/></th>
-          <th><Card testKey="b" key="b"/></th>
-          <th><Card testKey="c" key="c"/></th>
-        </tr>
-      </table> */
-      }
       <div className="scrollBox" onScroll={onScrollInBox} ref={myRef}>
-        {/* <CardArray keyArray={dataArray} key="unique" /> */}
-        {/* <Card testKey="a"/> */}
        {cardBox}
       </div>
       <div className="sideBox">

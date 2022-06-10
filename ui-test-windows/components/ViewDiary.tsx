@@ -4,7 +4,7 @@
 
 import React, { useEffect, useLayoutEffect, useRef, useState,useImperativeHandle } from "react";
 
-import { PanelOverflow } from "~/components/PanelOverflow.tsx";
+import { PanelOverflow } from "~/components/panelOverflow.tsx";
 
 
 
