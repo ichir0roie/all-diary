@@ -1,5 +1,4 @@
 import {Diary} from "~/lib/classes/models.ts";
-import * as RP from  "~/lib/classes/resultPacks.ts";
 import {CreateDemoData}from "~/lib/createDemoData.ts";
 
 

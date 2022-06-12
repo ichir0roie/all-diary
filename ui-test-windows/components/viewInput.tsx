@@ -12,11 +12,17 @@ import React, {
   useState,
 } from "react";
 
+import {AccessDiaryLocal}from "~/lib/accessDiaryLocal.ts";
+const ad =new AccessDiaryLocal();
+
 export function ViewInput() {
   console.log("call ViewInput");
   
   function submit(event: React.MouseEvent<HTMLButtonElement>) {
     console.log("submit");
+    let diary=ad.getDiaryToday();
+    diary.text=text;
+    ad.setDiary(diary);
   }
   const [date] = useState(new Date());
   function getDateText() {
@@ -24,7 +30,7 @@ export function ViewInput() {
     date.getDate() ;
   }
   const [text, setText] = useState("");
-  
+
   //TODO this is right?
   const[init,setInit]=useState(false);
   useEffect(()=>{
