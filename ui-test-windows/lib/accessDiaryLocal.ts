@@ -1,6 +1,8 @@
 import { Diary } from "~/lib/classes/models.ts";
 import { AccessDiaryBase } from "~/lib/accessDiaryBase.ts";
 
+import{DateUtil}from "~/lib/util/date.ts";
+
 export class AccessDiaryLocal extends AccessDiaryBase{
     public data=new Map<number,Map<string,Diary>>();
 
@@ -51,7 +53,8 @@ export class AccessDiaryLocal extends AccessDiaryBase{
         
         this.data.get(date.getFullYear())?.forEach((v:Diary,time:string)=>{
             if  (
-                time==this.getDateTime(date)
+                // time==this.getDateTime(date)
+                time==DateUtil.getDateTime(date)
                 ){
                 return  v;
             }
@@ -63,11 +66,9 @@ export class AccessDiaryLocal extends AccessDiaryBase{
         const key:string="diary"+diary.date.getFullYear();
         let data:Map<string,Diary>=this.getDiaryData(diary.date.getFullYear());
         console.log(data);
-        data.set(this.getDateTime(diary.date),diary);
+        // data.set(this.getDateTime(diary.date),diary);
+        data.set(DateUtil.getDateTime(diary.date),diary);
         // https://moznion.hatenadiary.com/entry/2019/11/12/160614
         localStorage.setItem(key,JSON.stringify({body:Object.fromEntries(data)}));
-    }
-    private getDateTime(date:Date):string{
-        return Math.floor(date.getTime()/1000/60/60/24).toString();
     }
 }

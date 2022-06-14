@@ -13,6 +13,9 @@ import React, {
 } from "react";
 
 import {AccessDiaryLocal}from "~/lib/accessDiaryLocal.ts";
+
+import{DateUtil}from"~/lib/util/date.ts";
+
 const ad =new AccessDiaryLocal();
 
 export function ViewInput() {
@@ -23,6 +26,7 @@ export function ViewInput() {
     let diary=ad.getDiaryToday();
     diary.text=text;
     ad.setDiary(diary);
+    setNowDate();
   }
   const [date] = useState(new Date());
   function getDateText() {
@@ -34,15 +38,34 @@ export function ViewInput() {
   //TODO this is right?
   const[init,setInit]=useState(false);
   useEffect(()=>{
-    let savedText =localStorage.getItem("todayDiaryText");
-    if(savedText==null)savedText="";
-    setText(savedText);
+    if(!isNewDate()){
+      loadText();
+    }
     setInit(true);
   },[init]);
 
+  function setNowDate(){
+    localStorage.setItem("latestDate",DateUtil.getDateTime(ad.baseDate));
+  }
+  function isNewDate():boolean{
+    const nowTime=DateUtil.getDateTime(ad.baseDate);
+    const latestTime=localStorage.getItem("latestDate");
+    if(latestTime==null)return true;
+    if (nowTime==latestTime)return false;
+    return  true
+  }
+  function loadText(){
+    let savedText =localStorage.getItem("todayDiaryText");
+    if(savedText==null)savedText="";
+    setText(savedText);
+  }
+  function setTextStorage(t:string){
+    setText(t);
+    localStorage.setItem("todayDiaryText",t);
+    setNowDate();
+  }
   function changeText(event: React.ChangeEvent<HTMLTextAreaElement>) {
-    setText(event.target.value.toString());
-    localStorage.setItem("todayDiaryText",event.target.value.toString());
+    setTextStorage(event.target.value.toString());
   }
   return (
     <div className="ViewInput">
