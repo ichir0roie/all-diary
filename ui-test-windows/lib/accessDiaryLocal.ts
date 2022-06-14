@@ -62,6 +62,12 @@ export class AccessDiaryLocal extends AccessDiaryBase{
         return null;
     }
 
+    //this is dangerous method.
+    public setDiaryYearly(year:number,map:Map<string,Diary>){
+        const key:string="diary"+year;
+        localStorage.setItem(key,JSON.stringify({body:Object.fromEntries(map)}));
+    }
+
     public setDiary(diary:Diary){
         const key:string="diary"+diary.date.getFullYear();
         let data:Map<string,Diary>=this.getDiaryData(diary.date.getFullYear());
