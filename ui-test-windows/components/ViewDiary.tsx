@@ -85,14 +85,16 @@ export function ViewDiary() {
         tgtYear = diaryData[diaryData.length-1][0].date.getFullYear() - 1;
       }
     const diaryArray = ad.getYearlyData(tgtYear,baseDate, viewLengthDay);
+    if(diaryArray!=null){
     // diaryData.push(diaryArray);
-      if (isFuture)  {
-        diaryData.splice(-1);
-        diaryData.unshift(diaryArray);
-      } else {
-        diaryData.shift();
-        diaryData.push(diaryArray);
-      }
+    if (isFuture)  {
+      diaryData.splice(-1);
+      diaryData.unshift(diaryArray);
+    } else {
+      diaryData.shift();
+      diaryData.push(diaryArray);
+    }
+    }
   }
   function addDays(isFuture:boolean){ 
     console.log( "add day vd.");
@@ -104,14 +106,16 @@ export function ViewDiary() {
     let years=new Array<number>();
     diaryData.forEach(year=>{years.push(year[0].date.getFullYear());});
     let daysYearly=ad.getDailyData(years,viewPosition,viewLengthDay,isFuture);
-    for(let c=0;c<daysYearly.length;c++){
-      if(isFuture){
-        diaryData[c].splice(-1);
-        diaryData[c]=[...daysYearly[c],...diaryData[c]];
-      }else{
-        diaryData[c].shift();
-        diaryData[c]=[...diaryData[c],...daysYearly[c]];
-      }
+    if(daysYearly!=null){
+      for(let c=0;c<daysYearly.length;c++){
+        if(isFuture){
+          diaryData[c].splice(-1);
+          diaryData[c]=[...daysYearly[c],...diaryData[c]];
+        }else{
+          diaryData[c].shift();
+          diaryData[c]=[...diaryData[c],...daysYearly[c]];
+        }
+    }
     };
     // refOfP.current?.addDays(isFuture);
   }

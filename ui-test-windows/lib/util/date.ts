@@ -4,6 +4,8 @@ export class DateUtil{
         return Math.floor(date.getTime()/this.milliOfDay).toString();
     }
     public static getDate(dateTime:string):Date{
-        return new Date(parseInt(dateTime)*this.milliOfDay);
+        const date=new Date();
+        date.setTime(parseInt(dateTime));
+        return date;
     }
 }

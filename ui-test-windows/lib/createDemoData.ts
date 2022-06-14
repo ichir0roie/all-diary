@@ -1,4 +1,5 @@
 import { Diary } from "./classes/models.ts";
+import {DateUtil}from "~/lib/util/date.ts";
 
 export class CreateDemoData {
   today:Date;
@@ -23,12 +24,12 @@ export class CreateDemoData {
         const nDate = this.getRandomDate(y,true);
 
         const testText = "this is test text.";
-        const diary: Diary = new Diary(id.toString(), nDate, testText);
+        const diary: Diary = new Diary(id.toString(), DateUtil.getDateTime(nDate) , testText);
         ta.push(diary);
         id += 1;
       }
       ta = ta.sort(function (a: Diary, b: Diary) {
-        return b.dateTimeString.getTime() - a.dateTimeString.getTime();
+        return b.date.getTime() - a.date.getTime();
       });
       array.push(ta);
     }
@@ -46,7 +47,7 @@ export class CreateDemoData {
       ta.push(this.getRandomDiary(this.getRandomDate(year,true)));
     }
     ta = ta.sort(function (a: Diary, b: Diary) {
-      return b.dateTimeString.getTime() - a.dateTimeString.getTime();
+      return b.date.getTime() - a.date.getTime();
     });
     
     return ta;
@@ -93,7 +94,7 @@ export class CreateDemoData {
 
     public getRandomDiary(date:Date){
       const testText = "this is test text.";
-      let d= new Diary(this.testId.toString(),date,testText);
+      let d= new Diary(this.testId.toString(),DateUtil.getDateTime(date),testText);
       this.testId+=1;
       return d;
     }

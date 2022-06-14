@@ -18,7 +18,7 @@ export class AccessDiaryBase{
         year:number,
         baseDate:Date,
         getRange:number
-        ):Array<Diary>{
+        ):Array<Diary>|null{
         console.log("get yearly")
         return new Array<Diary>();
     }
@@ -28,7 +28,7 @@ export class AccessDiaryBase{
         getPositionFrom:number,
         getPositionSize:number,
         future:boolean
-        ):Array<Array<Diary>>{
+        ):Array<Array<Diary>>|null{
             console.log("get daily")
             return Array<Array<Diary>>();
     }

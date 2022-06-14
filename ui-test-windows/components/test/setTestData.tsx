@@ -31,7 +31,7 @@ export function SetTestData(props: Props) {
         console.log("dist!!");
         const date:string=(baseDate.getTime()+1000*60*60*24*dist*range).toString();
         console.log(date);
-        let diary=new Diary(count.toString(),date,"this is id: "+count.toString()+" and time is "+date.getTime().toString());
+        let diary=new Diary(count.toString(),date,"this is id: "+count.toString()+" and time is "+date);
         count++;
         yearMap.set(date,diary);
     }

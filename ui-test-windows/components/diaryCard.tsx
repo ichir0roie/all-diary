@@ -13,7 +13,7 @@ export const DiaryCard=forwardRef( (prop:Prop)=> {
     // <div className="card-frame" key={props.testKey.toString()}>個々でやっても意味なかった。
     // https://dev.classmethod.jp/articles/avoiding-warningeach-child-in-a-list-should-have-a-unique-key-prop-in-react-apps-is-called-and-not-on-the-side-do-it-on-the-caller/
       <div className="DiaryCard">
-          <p>{diary.id} : {diary.dateTimeString.toLocaleString()}</p>
+          <p>{diary.id} : {diary.date.toLocaleDateString()}</p>
           <br/>
           <p>{diary.text}</p><br/>
       </div>

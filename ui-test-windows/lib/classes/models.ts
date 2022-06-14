@@ -7,7 +7,7 @@ export class Diary{
     text:string;
     constructor(id:string|null,dateTimeString:string|null,text:string|null){
         this.id =id==null? "":id;
-         this.dateTimeString=dateTimeString==null?"":dateTimeString;
+        this.dateTimeString=dateTimeString==null?"":dateTimeString;
         if(dateTimeString==null||dateTimeString==undefined||dateTimeString.length<=0){
             this.date=new Date(1997,5,12);
         }else{
