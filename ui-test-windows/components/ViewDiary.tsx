@@ -6,17 +6,16 @@ import React, { useEffect, useLayoutEffect, useRef, useState,useImperativeHandle
 
 import { PanelOverflow } from "~/components/panelOverflow.tsx";
 
-
-
-
 //コンポーネントはその機能を内部で完結する？ので、
 //日記関連の表示機能はここがルートになる？
 
-import { AccessDiary } from "~/lib/accessDiary.ts";
+// import { AccessDiary } from "~/lib/accessDiary.ts";
+import { AccessDiaryLocal } from "~/lib/accessDiaryLocal.ts";
 
 const viewLengthDay =10;
 const viewLengthYear=10;
-const ad=new AccessDiary();
+// const ad=new AccessDiary();
+const ad=new AccessDiaryLocal();
 const initData=ad.getRange(viewLengthYear,viewLengthDay);
 
 export function ViewDiary() {
@@ -126,6 +125,7 @@ export function ViewDiary() {
   
   });
   
+  console.log(diaryData);
 
   return (
     // <div className="card-frame" key={props.testKey.toString()}>個々でやっても意味なかった。

@@ -28,7 +28,7 @@ export class CreateDemoData {
         id += 1;
       }
       ta = ta.sort(function (a: Diary, b: Diary) {
-        return b.date.getTime() - a.date.getTime();
+        return b.dateTimeString.getTime() - a.dateTimeString.getTime();
       });
       array.push(ta);
     }
@@ -46,7 +46,7 @@ export class CreateDemoData {
       ta.push(this.getRandomDiary(this.getRandomDate(year,true)));
     }
     ta = ta.sort(function (a: Diary, b: Diary) {
-      return b.date.getTime() - a.date.getTime();
+      return b.dateTimeString.getTime() - a.dateTimeString.getTime();
     });
     
     return ta;

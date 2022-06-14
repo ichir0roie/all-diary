@@ -25,7 +25,6 @@ export class AccessDiaryLocal extends AccessDiaryBase{
             }
             ret.push(ta);
         }
-
         return ret;
     }
 
@@ -36,14 +35,24 @@ export class AccessDiaryLocal extends AccessDiaryBase{
         if(mapString=="{}")return new Map<string,Diary>();
         let json=JSON.parse(mapString) ;
         console.log(json);
-        let data:Map<string,Diary>=new Map(Object.entries(json["body"])) ;
+        let dataObject:Map<string,Diary>=new Map<string,Diary>(Object.entries(json["body"])) as Map<string,Diary>;
+        let data=new Map<string,Diary>();
+        dataObject.forEach((value,key)=>{
+            let tempDiary=new Diary(value.id,value.dateTimeString,value.text);
+            data.set(key,tempDiary);
+        });
+        //型変換が必要ということがわかった。
+        // console.log("from json");
+        // data.forEach((v,k)=>{
+        //     console.log(typeof(v));
+        // })
         return data;
     }
     public getDiaryToday():Diary{
         let d=this.getDiary(this.baseDate);
-        console.log(d);
+        // console.log(d);
         if(d==null){
-            return new Diary(null,this.baseDate,"");
+            return new Diary(null,DateUtil.getDateTime(this.baseDate),"");
         }else{
             return d;
         }

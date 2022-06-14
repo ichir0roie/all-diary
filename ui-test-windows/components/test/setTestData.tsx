@@ -29,12 +29,11 @@ export function SetTestData(props: Props) {
     let yearMap=new Map<string,Diary>();
     for(let range=0;range<props.dataRange;range++){
         console.log("dist!!");
-        const date=new Date(baseDate.getTime()+1000*60*60*24*dist*range);
+        const date:string=(baseDate.getTime()+1000*60*60*24*dist*range).toString();
         console.log(date);
         let diary=new Diary(count.toString(),date,"this is id: "+count.toString()+" and time is "+date.getTime().toString());
         count++;
-        const time=DateUtil.getDateTime(date);
-        yearMap.set(time,diary);
+        yearMap.set(date,diary);
     }
     data.set(year.toString(),yearMap);
     ad.setDiaryYearly(year,yearMap);
