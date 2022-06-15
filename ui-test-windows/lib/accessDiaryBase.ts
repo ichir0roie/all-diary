@@ -19,8 +19,7 @@ export class AccessDiaryBase{
         baseDate:Date,
         getRange:number
         ):Array<Diary>|null{
-        console.log("get yearly")
-        return new Array<Diary>();
+            return null;
     }
     
     public getDailyData(//TODO return ResultPackDaily
@@ -29,8 +28,7 @@ export class AccessDiaryBase{
         getPositionSize:number,
         future:boolean
         ):Array<Array<Diary>>|null{
-            console.log("get daily")
-            return Array<Array<Diary>>();
+            return null;
     }
 
 }

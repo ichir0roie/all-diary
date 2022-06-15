@@ -30,7 +30,7 @@ export const PanelOverflow =  (props: Prop) => {
     let tempPanels=new Array<JSX.Element>();
     function initializePanelAndRef(){
       props.data.forEach(diaryArray=>{
-        console.log(diaryArray);
+        // console.log(diaryArray);
         const year=diaryArray[0].date.getFullYear(); 
         const panel=<PanelYearly
           diaryArray={diaryArray}

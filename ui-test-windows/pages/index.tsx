@@ -2,8 +2,8 @@ import { useDeno } from "aleph/react";
 import React, { useState,useEffect,useRef,useLayoutEffect } from "react";
 
 import {Diary} from "~/lib/classes/models.ts";
-import {ViewDiary} from "~/components/viewDiary.tsx";
 import {ViewInput} from "~/components/viewInput.tsx";
+import {ViewDiary} from "~/components/viewDiary.tsx";
 import {SetTestData}from "~/components/test/setTestData.tsx";
 
 export default function Home() {

@@ -12,6 +12,7 @@ export class AccessDiaryLocal extends AccessDiaryBase {
     for (let y = 0; y < yearRange - 1; y++) {
       const ty = this.baseDate.getFullYear() - y;
       let data = this.getYearlyDataAll(ty);
+      if(data==null)continue;
       data = new Map(
         [...data.entries()].sort(
           (a, b) => Math.abs(parseInt(b[0]) - parseInt(a[0])),
@@ -25,6 +26,33 @@ export class AccessDiaryLocal extends AccessDiaryBase {
       ret.push(ta);
     }
     return ret;
+  }
+  override getYearlyData(
+    year: number,
+    baseDate: Date,
+    getRange: number,
+  ): Array<Diary> | null {
+    const key: string = "diary" + year;
+    let data = this.getYearlyDataAll(year);
+    if (data == null) {
+      return null;
+    } else {
+      let array = Array.from(data.values());
+      //HACK 
+      array=array.sort((a:Diary)=>Math.abs(baseDate.getTime()-a.date.getTime()));
+      array=array.slice(0,getRange);
+      array=array.sort((a:Diary,b:Diary)=>Math.abs(b.date.getTime()-a.date.getTime()));
+      console.log(array);
+      return array;
+    }
+  }
+  override getDailyData(//TODO return ResultPackDaily
+      years:Array<number>,
+      getPositionFrom:number,
+      getPositionSize:number,
+      future:boolean
+      ):Array<Array<Diary>>|null{
+        return null;
   }
 
   public getYearlyDataAll(year: number): Map<string, Diary> | null {
@@ -59,27 +87,7 @@ export class AccessDiaryLocal extends AccessDiaryBase {
     }
   }
 
-  override getYearlyData(
-    year: number,
-    baseDate: Date,
-    getRange: number,
-  ): Array<Diary> | null {
-    const key: string = "diary" + year;
-    let data = this.getYearlyDataAll(year);
-    if (data == null) {
-      return null;
-    } else {
-      let array = Array.from(data.values());
-      //HACK 
-      array=array.sort((a:Diary)=>Math.abs(baseDate.getTime()-a.date.getTime()));
-      array=array.slice(0,getRange);
-      array=array.sort((a:Diary,b:Diary)=>Math.abs(b.date.getTime()-a.date.getTime()));
-      console.log(array);
-      return array;
-    }
-  }
-
-  public getDiary(date: Date): Diary | null {
+  private getDiary(date: Date): Diary | null {
     this.data.get(date.getFullYear())?.forEach((v: Diary, time: string) => {
       if (
         // time==this.getDateTime(date)
@@ -92,7 +100,7 @@ export class AccessDiaryLocal extends AccessDiaryBase {
   }
 
   //this is dangerous method.
-  public setDiaryYearly(year: number, map: Map<string, Diary>) {
+  private setDiaryYearly(year: number, map: Map<string, Diary>) {
     const key: string = "diary" + year;
     localStorage.setItem(
       key,
@@ -100,11 +108,12 @@ export class AccessDiaryLocal extends AccessDiaryBase {
     );
   }
 
-  public setDiary(diary: Diary) {
+  private setDiary(diary: Diary) {
     const key: string = "diary" + diary.date.getFullYear();
-    let data: Map<string, Diary> = this.getYearlyDataAll(
+    let data: Map<string, Diary>|null = this.getYearlyDataAll(
       diary.date.getFullYear(),
     );
+    if(data==null)return;
     console.log(data);
     // data.set(this.getDateTime(diary.date),diary);
     data.set(DateUtil.getDateTime(diary.date), diary);
