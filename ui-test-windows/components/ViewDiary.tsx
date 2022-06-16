@@ -18,15 +18,18 @@ import { PanelOverflow } from "~/components/panelOverflow.tsx";
 // import { AccessDiary } from "~/lib/accessDiary.ts";
 import { AccessDiaryLocal } from "~/lib/accessDiaryLocal.ts";
 
-const viewLengthDay = 10;
-const viewLengthYear = 10;
-// const ad=new AccessDiary();
-const ad = new AccessDiaryLocal();
-const initData = ad.getRange(viewLengthYear, viewLengthDay);
+import{setTestData}from "~/lib/test/setTestData.ts";
 
+// setTestData(2010,2025,365);
+
+// const ad=new AccessDiary();
+let ad = new AccessDiaryLocal(10,10,1);
+ad.setDataMap();
+// const initData = ad.getRange();
 
 export function ViewDiary() {
-  console.log("call ViewDiary.");
+  console.log("view diary");
+
   const refViewDiary = useRef<HTMLHeadingElement>(null);
   // const refOfP=useRef<RefObjOverflowPanel>(null);
 
@@ -34,7 +37,8 @@ export function ViewDiary() {
   const [init, setInit] = useState(false);
 
   // const [diaryData,setDiaryData] =useState(ad.getRange(viewLengthYear,viewLengthDay)) ;// this is calc anytime.
-  const [diaryData, setDiaryData] = useState(initData);
+  const [diaryData, setDiaryData] = useState(ad.getDataArray());
+  console.log(diaryData);
 
   const baseDate = new Date();
 
@@ -42,7 +46,6 @@ export function ViewDiary() {
 
   function onScroll(ev: React.UIEvent<HTMLDivElement>) {
     const d = new Date();
-    console.log("Log : " + d.toTimeString());
 
     const scrollMaxY = ev.currentTarget.scrollHeight -
       ev.currentTarget.clientHeight;
@@ -55,95 +58,29 @@ export function ViewDiary() {
     const cardSizeY = 200;
 
     if (ev.currentTarget.scrollLeft < marginSizeX) {
-      const added = addYear(true);
+      const added = ad.moveYearlyData(true);
       if (added) ev.currentTarget.scrollLeft = marginSizeX + cardSizeX;
     } else if (ev.currentTarget.scrollLeft > scrollMaxX - marginSizeX) {
-      const added = addYear(false);
-      if (added) {
-        ev.currentTarget.scrollLeft = scrollMaxX - marginSizeX - cardSizeX;
-      }
+      const added = ad.moveYearlyData(false);
+      if (added) ev.currentTarget.scrollLeft = scrollMaxX - marginSizeX - cardSizeX;
     }
     if (ev.currentTarget.scrollTop < marginSizeY) {
-      const added = addDays(true);
+      const added = ad.moveDailyData(true);
       if (added) ev.currentTarget.scrollTop = marginSizeY + cardSizeY;
     } else if (ev.currentTarget.scrollTop > scrollMaxY - marginSizeY) {
-      const added = addDays(false);
-      if (added) {
-        ev.currentTarget.scrollTop = scrollMaxY - marginSizeY - cardSizeY;
-      }
+      const added = ad.moveDailyData(false);
+      if (added) ev.currentTarget.scrollTop = scrollMaxY - marginSizeY - cardSizeY;
     }
-    setDiaryData([...diaryData]);
-    // console.log(diaryData);
-    // console.log(diaryData.length);
-  }
-
-  function addYear(isFuture: boolean): Boolean {
-    console.log("add year vd.");
-    // refOfP.current?.addYear(isFuture);
-    let tgtYear = 0;
-    if (isFuture) {
-      tgtYear = diaryData[0][0].date.getFullYear() + 1;
-    } else {
-      tgtYear = diaryData[diaryData.length - 1][0].date.getFullYear() - 1;
-    }
-    const diaryArray = ad.getYearlyData(tgtYear, baseDate, viewLengthDay);
-    if (diaryArray != null) {
-      // diaryData.push(diaryArray);
-      if (isFuture) {
-        diaryData.splice(-1);
-        diaryData.unshift(diaryArray);
-      } else {
-        diaryData.shift();
-        diaryData.push(diaryArray);
-      }
-    } else {
-      return false;
-    }
-    return true;
-  }
-  function addDays(isFuture: boolean): boolean {
-    console.log("add day vd.");
-    if (isFuture) {
-      viewPosition += 1;
-    } else {
-      viewPosition -= 1;
-    }
-    let years = new Array<number>();
-    diaryData.forEach((year) => {
-      years.push(year[0].date.getFullYear());
-    });
-    let daysYearly = ad.getDailyData(
-      years,
-      viewPosition,
-      viewLengthDay,
-      isFuture,
-    );
-    if (daysYearly != null) {
-      for (let c = 0; c < daysYearly.length; c++) {
-        if (isFuture) {
-          diaryData[c].splice(-1);
-          diaryData[c] = [...daysYearly[c], ...diaryData[c]];
-        } else {
-          diaryData[c].shift();
-          diaryData[c] = [...diaryData[c], ...daysYearly[c]];
-        }
-      }
-    } else {
-      return false;
-    }
-    return true;
-    // refOfP.current?.addDays(isFuture);
+    setDiaryData(ad.getDataArray());
   }
 
   useEffect(() => {
     if (!init) {
-      console.log("init");
       refViewDiary.current?.scrollTo(100, 100);
       setInit(true);
     }
   });
 
-  console.log(diaryData);
 
   return (
     // <div className="card-frame" key={props.testKey.toString()}>個々でやっても意味なかった。

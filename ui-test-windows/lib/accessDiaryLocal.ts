@@ -4,103 +4,105 @@ import { AccessDiaryBase } from "~/lib/accessDiaryBase.ts";
 import { DateUtil } from "~/lib/util/date.ts";
 
 export class AccessDiaryLocal extends AccessDiaryBase {
-  public data = new Map<number, Map<string, Diary>>();
-
-  override getRange(yearRange: number, dayRange: number): Array<Array<Diary>> {
-    let ret = new Array<Array<Diary>>();
-
-    for (let y = 0; y < yearRange - 1; y++) {
+  override setDataMap() {
+    super.setDataMap();
+    console.log("set data map local.");
+    for (let y = 0; y < this.dataSizeYearly - 1; y++) {
       const ty = this.baseDate.getFullYear() - y;
-      let data = this.getYearlyDataAll(ty);
-      if(data==null)continue;
-      data = new Map(
-        [...data.entries()].sort(
-          (a, b) => Math.abs(parseInt(b[0]) - parseInt(a[0])),
-        ),
-      );
-      let ta = new Array<Diary>();
-      let values = Array.from(data.values());
-      for (var l = 0; l < dayRange; l++) {
-        if (values[l] != undefined) ta.push(values[l]);
-      }
-      ret.push(ta);
-    }
-    return ret;
-  }
-  override getYearlyData(
-    year: number,
-    baseDate: Date,
-    getRange: number,
-  ): Array<Diary> | null {
-    const key: string = "diary" + year;
-    let data = this.getYearlyDataAll(year);
-    if (data == null) {
-      return null;
-    } else {
-      let array = Array.from(data.values());
-      //HACK 
-      array=array.sort((a:Diary)=>Math.abs(baseDate.getTime()-a.date.getTime()));
-      array=array.slice(0,getRange);
-      array=array.sort((a:Diary,b:Diary)=>Math.abs(b.date.getTime()-a.date.getTime()));
-      console.log(array);
-      return array;
+      this.setYearlyMap(ty);
     }
   }
-  override getDailyData(//TODO return ResultPackDaily
-      years:Array<number>,
-      getPositionFrom:number,
-      getPositionSize:number,
-      future:boolean
-      ):Array<Array<Diary>>|null{
-        return null;
+  // this have bug.
+  override moveYearlyData(
+    future: boolean,
+  ): boolean {
+    super.moveYearlyData(future);
+
+    const years = Array.from(this.dataMap.keys()).sort();
+    const beforeYear = future ? years[years.length - 1] : years[0];
+    const newYear = future ? beforeYear + 1 : beforeYear - 1;
+
+    const success = this.setYearlyMap(newYear);
+    if (success) {
+      this.dataMap.delete(beforeYear);
+    }
+    return true;
   }
 
-  public getYearlyDataAll(year: number): Map<string, Diary> | null {
+  override moveDailyData( //TODO return ResultPackDaily
+    future: boolean,
+  ): boolean {
+    super.moveDailyData(future);
+
+    return false;
+  }
+
+  override setYearlyMap(year: number): boolean {
     const key = "diary" + year.toString();
     const mapString: string | null = localStorage.getItem(key);
-    if (mapString == null) return null;
-    if (mapString == "{}") return null;
+    if (mapString == null) return false;
+    if (mapString == "{}") return false;
+
     let json = JSON.parse(mapString);
-    console.log(json);
+    //Date型は文字列になっている。
     let dataObject: Map<string, Diary> = new Map<string, Diary>(
       Object.entries(json["body"]),
     ) as Map<string, Diary>;
-    let data = new Map<string, Diary>();
-    dataObject.forEach((value, key) => {
-      let tempDiary = new Diary(value.id, value.dateTimeString, value.text);
-      data.set(key, tempDiary);
+
+    let keys = Array.from(dataObject.keys());
+    let basePosition = 0;
+    for (let c = 0; c < keys.length; c++) {
+      let keyDate = DateUtil.getDate(parseInt(keys[c]));
+      keyDate.setFullYear(this.baseDate.getFullYear());
+      if (
+        DateUtil.getDayCount(keyDate) == DateUtil.getDayCount(this.baseDate)
+      ) {
+        basePosition = c;
+        break;
+      }
+    }
+    const from = basePosition - this.dataSizeDaily / 2 < 0
+      ? 0
+      : basePosition - this.dataSizeDaily / 2;
+    const to = basePosition + this.dataSizeDaily / 2 >= keys.length
+      ? 0
+      : basePosition + this.dataSizeDaily / 2;
+    keys = keys.slice(from, to);
+    let data = new Map<number, Diary>();
+    keys.forEach((key) => {
+      if (dataObject.has(key)) {
+        let t: Diary | undefined = dataObject.get(key); //this is bare object.
+        if (t === undefined) return;
+        let diary: Diary = new Diary(t.id, t.dateTimeNumber, t.text);
+        data.set(parseInt(key), diary);
+      }
     });
-    //型変換が必要ということがわかった。
-    // console.log("from json");
-    // data.forEach((v,k)=>{
-    //     console.log(typeof(v));
-    // })
-    return data;
+    this.dataMap.set(year, data);
+    return true;
   }
+
   public getDiaryToday(): Diary {
     let d = this.getDiary(this.baseDate);
-    // console.log(d);
     if (d == null) {
-      return new Diary(null, DateUtil.getDateTime(this.baseDate), "");
+      return new Diary(null, DateUtil.getDayCount(this.baseDate), "");
     } else {
       return d;
     }
   }
 
   private getDiary(date: Date): Diary | null {
-    this.data.get(date.getFullYear())?.forEach((v: Diary, time: string) => {
-      if (
-        // time==this.getDateTime(date)
-        time == DateUtil.getDateTime(date)
-      ) {
-        return v;
-      }
-    });
-    return null;
+    if (!this.dataMap.has(date.getFullYear())) {
+      this.setYearlyMap(date.getFullYear());
+    }
+    const ret = this.dataMap.get(date.getFullYear())?.get(
+      DateUtil.getDayCount(date),
+    );
+    if (ret == undefined) return null;
+    return ret;
   }
 
   //this is dangerous method.
-  private setDiaryYearly(year: number, map: Map<string, Diary>) {
+  public setDiaryYearly(year: number, map: Map<number, Diary>) {
     const key: string = "diary" + year;
     localStorage.setItem(
       key,
@@ -108,19 +110,21 @@ export class AccessDiaryLocal extends AccessDiaryBase {
     );
   }
 
-  private setDiary(diary: Diary) {
+  override setDiary(diary: Diary) {
     const key: string = "diary" + diary.date.getFullYear();
-    let data: Map<string, Diary>|null = this.getYearlyDataAll(
-      diary.date.getFullYear(),
+    if (!this.dataMap.has(diary.date.getFullYear())) {
+      this.setYearlyMap(diary.date.getFullYear());
+    }
+    this.dataMap.get(diary.date.getFullYear())?.set(
+      DateUtil.getDayCount(diary.date),
+      diary,
     );
-    if(data==null)return;
-    console.log(data);
-    // data.set(this.getDateTime(diary.date),diary);
-    data.set(DateUtil.getDateTime(diary.date), diary);
-    // https://moznion.hatenadiary.com/entry/2019/11/12/160614
-    localStorage.setItem(
-      key,
-      JSON.stringify({ body: Object.fromEntries(data) }),
-    );
+    const setData = this.dataMap.get(diary.date.getFullYear());
+    if (setData != undefined) {
+      localStorage.setItem(
+        key,
+        JSON.stringify({ body: Object.fromEntries(setData) }),
+      );
+    }
   }
 }

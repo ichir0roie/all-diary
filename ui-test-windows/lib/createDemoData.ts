@@ -24,7 +24,7 @@ export class CreateDemoData {
         const nDate = this.getRandomDate(y,true);
 
         const testText = "this is test text.";
-        const diary: Diary = new Diary(id.toString(), DateUtil.getDateTime(nDate) , testText);
+        const diary: Diary = new Diary(id.toString(), DateUtil.getDayCount(nDate) , testText);
         ta.push(diary);
         id += 1;
       }
@@ -94,7 +94,7 @@ export class CreateDemoData {
 
     public getRandomDiary(date:Date){
       const testText = "this is test text.";
-      let d= new Diary(this.testId.toString(),DateUtil.getDateTime(date),testText);
+      let d= new Diary(this.testId.toString(),DateUtil.getDayCount(date),testText);
       this.testId+=1;
       return d;
     }
