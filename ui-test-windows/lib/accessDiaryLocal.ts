@@ -14,16 +14,15 @@ export class AccessDiaryLocal extends AccessDiaryBase {
   }
 
   override getDataArray(): Array<Array<Diary>> {
-
     if (!this.moved && this.arrayInitialized) return this.dataArray;
 
     this.dataArray = new Array<Array<Diary>>();
-    let yearKeys=Array.from(this.dataMap.keys());
-    yearKeys=yearKeys.sort((a,b)=>b-a);
-    yearKeys.forEach(key=>{
+    let yearKeys = Array.from(this.dataMap.keys());
+    yearKeys = yearKeys.sort((a, b) => b - a);
+    yearKeys.forEach((key) => {
       let yearly = new Array<Diary>();
-      let value=this.dataMap.get(key);
-      if(value==null)return;
+      let value = this.dataMap.get(key);
+      if (value == null) return;
       value.forEach((value, key) => {
         yearly.push(value);
       });
@@ -35,7 +34,6 @@ export class AccessDiaryLocal extends AccessDiaryBase {
     return this.dataArray;
   }
 
-
   // this have bug.
   override moveYearlyData(
     future: boolean,
@@ -45,24 +43,18 @@ export class AccessDiaryLocal extends AccessDiaryBase {
 
     const years = Array.from(this.dataMap.keys()).sort();
     const beforeYear = future ? years[years.length - 1] : years[0];
-    const otherSideYear=future ?  years[0]:years[years.length - 1] ;
+    const otherSideYear = future ? years[0] : years[years.length - 1];
     const newYear = future ? beforeYear + 1 : beforeYear - 1;
 
-
-
-
     const success = this.setYearlyMap(newYear);
-
-
-
 
     if (success) {
       "delete before year";
       this.dataMap.delete(otherSideYear);
+      return true;
+    }else{
+      return false;
     }
-
-
-    return true;
   }
 
   override moveDailyData( //TODO return ResultPackDaily
