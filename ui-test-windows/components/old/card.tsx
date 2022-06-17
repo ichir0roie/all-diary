@@ -9,7 +9,7 @@ export interface CardProps{
 }
 
 export default function Card(props:CardProps) {
-  // console.log(props.key);
+
   const [value,setValue]=useState("a");
   return (
     // <div className="card-frame" key={props.testKey.toString()}>個々でやっても意味なかった。

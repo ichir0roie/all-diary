@@ -3,7 +3,7 @@ import { Diary } from "./classes/models.ts";
 export class AccessDiaryBase {
   protected dataMap = new Map<number, Map<number, Diary>>();
 
-  private dataArray = new Array<Array<Diary>>();
+  protected dataArray = new Array<Array<Diary>>();
 
   baseDate: Date;
   dataSizeYearly = 5;
@@ -13,8 +13,8 @@ export class AccessDiaryBase {
   protected positionDaily = 0;
   protected positionYearly = 0;
 
-  private moved = false;
-  private arrayInitialized = false;
+  protected moved = false;
+  protected arrayInitialized = false;
 
   constructor(sizeYearly: number, sizeDaily: number, pushSize: number) {
     this.dataSizeDaily = sizeYearly;
@@ -27,26 +27,11 @@ export class AccessDiaryBase {
 
   // for initialize.
   public setDataMap() {
-    console.log("set data map");
+
   }
 
-  public getDataArray(): Array<Array<Diary>> {
-    console.log("get data array");
-
-    if (!this.moved && this.arrayInitialized) return this.dataArray;
-
-    this.dataArray = new Array<Array<Diary>>();
-    console.log(Array.from(this.dataMap.values()));
-    this.dataMap.forEach((value, key) => {
-      let yearly = new Array<Diary>();
-      value.forEach((value, key) => {
-        yearly.push(value);
-      });
-      this.dataArray.push(yearly);
-    });
-
-    if (!this.arrayInitialized) this.arrayInitialized = true;
-
+  
+  public getDataArray(): Array<Array<Diary>> {  
     return this.dataArray;
   }
 

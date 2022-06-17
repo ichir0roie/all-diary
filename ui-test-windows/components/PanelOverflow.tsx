@@ -5,7 +5,10 @@
 import { Diary } from "~/lib/classes/models.ts";
 import { DiaryCard } from "~/components/diaryCard.tsx";
 import { PanelYearly } from "~/components/panelYearly.tsx";
-import { RefObjOverflowPanel,RefObjPanelYearly } from "~/lib/classes/viewDiaryInterfaces.ts";
+import {
+  RefObjOverflowPanel,
+  RefObjPanelYearly,
+} from "~/lib/classes/viewDiaryInterfaces.ts";
 
 import { AccessDiary } from "~/lib/accessDiary.ts";
 
@@ -25,26 +28,27 @@ export interface Prop {
 }
 
 //https://stackoverflow.com/questions/37949981/call-child-method-from-parent
-export const PanelOverflow =  (props: Prop) => {
-   
-    let tempPanels=new Array<JSX.Element>();
-    function initializePanelAndRef(){
-      props.data.forEach(diaryArray=>{
-        // console.log(diaryArray);
-        const year=diaryArray[0].date.getFullYear(); 
-        const panel=<PanelYearly
+export const PanelOverflow = (props: Prop) => {
+  let tempPanels = new Array<JSX.Element>();
+  function initializePanelAndRef() {
+    props.data.forEach((diaryArray) => {
+      diaryArray;
+      const year = diaryArray[0].date.getFullYear();
+      const panel = (
+        <PanelYearly
           diaryArray={diaryArray}
         />
-        tempPanels.push(panel);  
-      });
-    }
-    initializePanelAndRef();
- 
-    return (
-      // <div className="card-frame" key={props.testKey.toString()}>個々でやっても意味なかった。
-      // https://dev.classmethod.jp/articles/avoiding-warningeach-child-in-a-list-should-have-a-unique-key-prop-in-react-apps-is-called-and-not-on-the-side-do-it-on-the-caller/
-      <div className="PanelOverflow">
-        {tempPanels}
-      </div>
-    );
+      );
+      tempPanels.push(panel);
+    });
   }
+  initializePanelAndRef();
+
+  return (
+    // <div className="card-frame" key={props.testKey.toString()}>個々でやっても意味なかった。
+    // https://dev.classmethod.jp/articles/avoiding-warningeach-child-in-a-list-should-have-a-unique-key-prop-in-react-apps-is-called-and-not-on-the-side-do-it-on-the-caller/
+    <div className="PanelOverflow">
+      {tempPanels}
+    </div>
+  );
+};

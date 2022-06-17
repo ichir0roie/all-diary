@@ -21,7 +21,7 @@ function get2dKeys(lenRow: number, lenCol: number) {
 }
 
 export default function Home() {
-  console.log("Home!")
+
 
   const [dataArray, setDataArray] = useState(cardInitialize());
   

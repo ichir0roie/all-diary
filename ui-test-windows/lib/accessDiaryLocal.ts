@@ -6,26 +6,62 @@ import { DateUtil } from "~/lib/util/date.ts";
 export class AccessDiaryLocal extends AccessDiaryBase {
   override setDataMap() {
     super.setDataMap();
-    console.log("set data map local.");
+    "set data map local.";
     for (let y = 0; y < this.dataSizeYearly - 1; y++) {
       const ty = this.baseDate.getFullYear() - y;
       this.setYearlyMap(ty);
     }
   }
+
+  override getDataArray(): Array<Array<Diary>> {
+
+    if (!this.moved && this.arrayInitialized) return this.dataArray;
+
+    this.dataArray = new Array<Array<Diary>>();
+    let yearKeys=Array.from(this.dataMap.keys());
+    yearKeys=yearKeys.sort((a,b)=>b-a);
+    yearKeys.forEach(key=>{
+      let yearly = new Array<Diary>();
+      let value=this.dataMap.get(key);
+      if(value==null)return;
+      value.forEach((value, key) => {
+        yearly.push(value);
+      });
+      this.dataArray.push(yearly);
+    });
+
+    if (!this.arrayInitialized) this.arrayInitialized = true;
+
+    return this.dataArray;
+  }
+
+
   // this have bug.
   override moveYearlyData(
     future: boolean,
   ): boolean {
+    "move year";
     super.moveYearlyData(future);
 
     const years = Array.from(this.dataMap.keys()).sort();
     const beforeYear = future ? years[years.length - 1] : years[0];
+    const otherSideYear=future ?  years[0]:years[years.length - 1] ;
     const newYear = future ? beforeYear + 1 : beforeYear - 1;
 
+
+
+
     const success = this.setYearlyMap(newYear);
+
+
+
+
     if (success) {
-      this.dataMap.delete(beforeYear);
+      "delete before year";
+      this.dataMap.delete(otherSideYear);
     }
+
+
     return true;
   }
 
@@ -73,6 +109,7 @@ export class AccessDiaryLocal extends AccessDiaryBase {
       if (dataObject.has(key)) {
         let t: Diary | undefined = dataObject.get(key); //this is bare object.
         if (t === undefined) return;
+        t;
         let diary: Diary = new Diary(t.id, t.dateTimeNumber, t.text);
         data.set(parseInt(key), diary);
       }

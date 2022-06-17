@@ -5,7 +5,7 @@ import React, { useState,useEffect,useRef,useLayoutEffect } from "react";
 // import CardArray from "~/components/cardArray.tsx";
 
 export default function Home() {
-  console.log("Home!")
+
 
   const [dataArray, setDataArray] = useState(cardInitialize());
   

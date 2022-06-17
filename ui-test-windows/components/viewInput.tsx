@@ -16,13 +16,13 @@ import {AccessDiaryLocal}from "~/lib/accessDiaryLocal.ts";
 
 import{DateUtil}from"~/lib/util/date.ts";
 
-const ad =new AccessDiaryLocal();
+const ad =new AccessDiaryLocal(10,10,1);
 
 export function ViewInput() {
-  console.log("call ViewInput");
+
   
   function submit(event: React.MouseEvent<HTMLButtonElement>) {
-    console.log("submit");
+
     let diary=ad.getDiaryToday();
     diary.text=text;
     ad.setDiary(diary);
@@ -45,10 +45,10 @@ export function ViewInput() {
   },[init]);
 
   function setNowDate(){
-    localStorage.setItem("latestDate",DateUtil.getDateTime(ad.baseDate));
+    localStorage.setItem("latestDate",DateUtil.getDayCount(ad.baseDate).toString());
   }
   function isNewDate():boolean{
-    const nowTime=DateUtil.getDateTime(ad.baseDate);
+    const nowTime=DateUtil.getDayCount(ad.baseDate).toString();
     const latestTime=localStorage.getItem("latestDate");
     if(latestTime==null)return true;
     if (nowTime==latestTime)return false;
