@@ -1,28 +1,25 @@
 import { Diary } from "./classes/models.ts";
 
 export class AccessDiaryBase {
-  protected dataMap = new Map<number, Map<number, Diary>>();
 
+  protected dataMap = new Map<number, Map<number, Diary>>();
   protected dataArray = new Array<Array<Diary>>();
 
-  baseDate: Date;
   dataSizeYearly = 5;
-  dataSizeDaily = 5;
+  dataSizeDaily = 10;
   dataPushSize = 1;
-
-  protected positionDaily = 0;
-  protected positionYearly = 0;
 
   protected moved = false;
   protected arrayInitialized = false;
-
+  
+  protected baseDate = new Date(
+    new Date().toLocaleString("jp", { timeZone: "Asia/Tokyo" }),
+  );
   constructor(sizeYearly: number, sizeDaily: number, pushSize: number) {
     this.dataSizeDaily = sizeYearly;
     this.dataSizeYearly = sizeDaily;
     this.dataPushSize = pushSize;
-    this.baseDate = new Date(
-      new Date().toLocaleString("jp", { timeZone: "Asia/Tokyo" }),
-    );
+    
   }
 
   // for initialize.
