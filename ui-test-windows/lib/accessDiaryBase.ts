@@ -46,7 +46,6 @@ export class AccessDiaryBase {
     });
 
     if (!this.arrayInitialized) this.arrayInitialized = true;
-
     return this.dataArray;
   }
 
