@@ -1,0 +1,7 @@
+<https://www.google.com/search?q=deno+postgres&sxsrf=ALiCzsbc3j8tCfZldChv7olkzkVPq4O15A%3A1658145985058&ei=wUzVYvGbA9eAoASs7qqACw&ved=0ahUKEwixgLOTs4L5AhVXAIgKHSy3CrAQ4dUDCA4&uact=5&oq=deno+postgres&gs_lcp=Cgdnd3Mtd2l6EAMyBQgAEMsBMgUIABDLATIFCAAQgAQyBQgAEIAEMgUIABCABDIFCAAQgAQyBggAEB4QFjIGCAAQHhAWMgYIABAeEBYyBggAEB4QFjoHCCMQsAMQJzoHCAAQRxCwAzoECCMQJzoECAAQQzoFCAAQkQI6CwguEIAEEMcBENEDOggILhCABBDUAjoECAAQCjoKCAAQgAQQhwIQFDoICAAQHhAWEApKBAhBGABKBAhGGABQiwlY7iFg9yRoAXABeACAAW-IAd4JkgEDOC41mAEAoAEByAEJwAEB&sclient=gws-wiz>
+
+<https://deno.land/x/postgres@v0.16.1>
+<https://deno.com/deploy/docs/tutorial-postgres>
+
+
+
