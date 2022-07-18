@@ -6,7 +6,7 @@ import {ViewInput} from "~/components/viewInput.tsx";
 import {ViewDiary} from "~/components/viewDiary.tsx";
 
 export default function Home() {
-  console.log("Home!")
+
     
   return (
     <div className="page">

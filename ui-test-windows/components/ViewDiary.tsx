@@ -20,6 +20,8 @@ import { AccessDiaryLocal } from "~/lib/accessDiaryLocal.ts";
 
 import{setTestData}from "~/lib/test/setTestData.ts";
 
+
+
 // setTestData(2010,2025,365);
 
 // const ad=new AccessDiary();
@@ -28,7 +30,7 @@ ad.setDataMap();
 // const initData = ad.getRange();
 
 export function ViewDiary() {
-  console.log("view diary");
+
 
   const refViewDiary = useRef<HTMLHeadingElement>(null);
   // const refOfP=useRef<RefObjOverflowPanel>(null);
@@ -38,7 +40,7 @@ export function ViewDiary() {
 
   // const [diaryData,setDiaryData] =useState(ad.getRange(viewLengthYear,viewLengthDay)) ;// this is calc anytime.
   const [diaryData, setDiaryData] = useState(ad.getDataArray());
-  console.log(diaryData);
+
 
   const baseDate = new Date();
 
@@ -80,8 +82,6 @@ export function ViewDiary() {
       setInit(true);
     }
   });
-
-
   return (
     // <div className="card-frame" key={props.testKey.toString()}>個々でやっても意味なかった。
     // https://dev.classmethod.jp/articles/avoiding-warningeach-child-in-a-list-should-have-a-unique-key-prop-in-react-apps-is-called-and-not-on-the-side-do-it-on-the-caller/

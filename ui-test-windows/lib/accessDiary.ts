@@ -5,13 +5,13 @@ import {CreateDemoData}from "~/lib/createDemoData.ts";
 export class AccessDiary{
     cdd:CreateDemoData;
     constructor(){
-        console.log("init ad.");
+
         this.cdd=new CreateDemoData();
     }
 
     // for initialize.
     public getRange(yearRange:number,dayRange:number):Array<Array<Diary>>{
-        console.log("get range");
+
         let data:Array<Array<Diary>>=[];
         data=this.cdd.getRange(yearRange,dayRange);
         return data;
@@ -22,7 +22,7 @@ export class AccessDiary{
         baseDate:Date,
         getRange:number
         ):Array<Diary>{
-            console.log("get yearly")
+
         let data:Array<Diary>;//todo ?
         data=this.cdd.getYear(year,baseDate,getRange);
         return data;
@@ -38,7 +38,7 @@ export class AccessDiary{
         getPositionSize:number,
         future:boolean
         ):Array<Array<Diary>>{
-            console.log("get daily")
+
             let data=new Array<Array<Diary>>();
             data=this.cdd.getDailyData(years);
             return data;

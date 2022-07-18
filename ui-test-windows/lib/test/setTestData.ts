@@ -10,6 +10,8 @@ export function setTestData(
   yearTo: number,
   dataSize: number,
 ) {
+
+
   let data = new Map<number, Map<number, Diary>>();
   const dist = Math.floor(365 / dataSize);
   let count = 0;
@@ -28,6 +30,7 @@ export function setTestData(
       count++;
       yearMap.set(date, diary);
     }
+
     data.set(year, yearMap);
     ad.setDiaryYearly(year, yearMap);
   }
