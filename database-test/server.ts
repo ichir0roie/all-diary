@@ -13,3 +13,6 @@ serve({
   unocss: "preset",
   ssr,
 });
+
+
+// TODO とりあえず、rest apiチックに実装して画面にデータを表示できるようにする。
