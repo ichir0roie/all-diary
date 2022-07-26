@@ -7,9 +7,13 @@
 import { Client } from "https://deno.land/x/postgres@v0.16.1/mod.ts";
 import { QueryObjectResult } from "https://deno.land/x/postgres@v0.16.1/query/query.ts";
 
-function printResult(result:QueryObjectResult<unknown>):void{
-    const body = JSON.stringify(result.rows, null, 2);
-    console.log(body)
+import {Diary}from "~/classes/DataBaseModels.ts"
+
+function printResult(result:QueryObjectResult<Diary>):void{
+    const data:Array<Diary> =result.rows;
+    // const body = JSON.stringify(result.rows, null, 2);
+    // const data:Array<Diary>=JSON.parse(body);
+    console.log(data[0].id);
 }
 
 async function loadSql(path:string):Promise<string>{
@@ -28,9 +32,9 @@ const client = new Client({
   await client.connect();
   
   {
-    const result = await client.queryObject(await loadSql('selectTest'));
+    const result:QueryObjectResult<Diary> = await client.queryObject(await loadSql('selectTest'));
     // console.log(result.rows); // [{id: 1, name: 'Carlos'}, {id: 2, name: 'Johnru'}, ...]
-    printResult(result)
+    printResult(result);
     
   }
   
